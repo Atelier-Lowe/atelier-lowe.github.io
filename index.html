@@ -1,0 +1,2010 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Löwe Atelier</title>
+<meta name="theme-color" content="#24454A">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Löwe Atelier">
+<meta name="robots" content="noindex, nofollow">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<style>
+:root{
+  --bg:#F5F1E8; --surface:#FFFFFF; --surface2:#EFE8DC; --line:#E2D9CB; --line-input:#7A7F76;
+  --fg:#24454A; --muted:#5E6F70; --accent:#965A2E; --on-accent:#FFFFFF; --danger:#B3402A; --success:#2E6B4A;
+  --r-sm:8px; --r-md:12px; --r-lg:18px; --sh:0 1px 2px rgba(36,69,74,.06),0 4px 14px rgba(36,69,74,.08);
+  --safe-b:env(safe-area-inset-bottom,0px); --safe-t:env(safe-area-inset-top,0px);
+}
+[hidden]{display:none!important}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,sans-serif}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+h1,h2,h3{margin:0;line-height:1.2}
+h1{font-size:22px} h2{font-size:18px} h3{font-size:15px}
+.muted{color:var(--muted)} .small{font-size:13px}
+header.top{position:sticky;top:0;z-index:20;background:rgba(245,241,232,.94);backdrop-filter:blur(10px);padding:calc(10px + var(--safe-t)) 16px 10px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--line)}
+header.top img{height:30px}
+header.top .title{flex:1;font-weight:650;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.iconbtn{border:0;background:transparent;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;flex:none}
+.iconbtn:active{background:var(--surface2)}
+.iconbtn svg{width:22px;height:22px}
+main{padding:16px 16px calc(96px + var(--safe-b));max-width:860px;margin:0 auto}
+.view{display:none} .view.on{display:block}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--sh);padding:16px}
+.stack>*+*{margin-top:12px}
+.row{display:flex;gap:10px;align-items:center}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.btn{border:1px solid var(--line-input);background:var(--surface);border-radius:var(--r-md);min-height:44px;padding:10px 14px;font-weight:600;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.btn.dark{background:var(--fg);border-color:var(--fg);color:#fff}
+.btn.ghost{border-color:transparent;background:transparent}
+.btn.danger{color:var(--danger);border-color:var(--danger)}
+.btn.block{width:100%}
+.btn:disabled{opacity:.5}
+.btn svg{width:20px;height:20px}
+label.f{display:block;font-size:13px;font-weight:600;color:var(--muted);margin-bottom:4px}
+input.i,select.i,textarea.i{width:100%;border:1px solid var(--line-input);background:var(--surface);border-radius:var(--r-sm);padding:10px 12px;min-height:44px}
+textarea.i{min-height:88px;resize:vertical}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+#trace{position:fixed;inset:0;z-index:60;background:var(--bg);overflow:auto;padding:calc(var(--safe-t) + 12px) 14px calc(var(--safe-b) + 20px)}
+#trace .tw{position:relative;touch-action:manipulation;user-select:none;-webkit-user-select:none}
+#trace .tw img{display:block;width:100%;border-radius:10px}
+#trace .tw svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.link-row{display:flex;gap:8px;align-items:center;text-align:left;width:100%;background:none;border:0;padding:6px 0;color:var(--fg);font-size:15px;text-decoration:underline;text-underline-offset:3px}
+.chip{border:1px solid var(--line-input);background:var(--surface);border-radius:999px;padding:8px 13px;font-size:14px;font-weight:550}
+.chip[aria-pressed="true"]{background:var(--fg);border-color:var(--fg);color:#fff}
+.chip .sw{display:inline-block;width:14px;height:14px;border-radius:50%;vertical-align:-2px;margin-right:6px;border:1px solid rgba(0,0,0,.15)}
+nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--surface);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(4,1fr);padding-bottom:var(--safe-b)}
+nav.tabs button{border:0;background:none;padding:8px 0 9px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11.5px;font-weight:600;color:var(--muted)}
+nav.tabs button svg{width:24px;height:24px}
+nav.tabs button[aria-current="page"]{color:var(--fg)}
+nav.tabs button[aria-current="page"] svg{stroke:var(--accent)}
+.empty{text-align:center;padding:32px 16px;color:var(--muted)}
+.empty svg{width:44px;height:44px;stroke:var(--line-input);margin-bottom:6px}
+.plist{display:grid;gap:10px}
+.pitem{display:flex;gap:12px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);padding:10px;text-align:left;width:100%}
+.pitem .th{width:64px;height:64px;border-radius:10px;background:var(--surface2) center/cover;flex:none;display:grid;place-items:center}
+.pitem .th svg{width:26px;stroke:var(--line-input)}
+.pitem .meta{flex:1;min-width:0}
+.pitem .meta b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.big-actions{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.act{border:1px solid var(--line);background:var(--surface);border-radius:var(--r-lg);padding:14px 12px;text-align:left;display:flex;flex-direction:column;gap:6px;min-height:92px;box-shadow:var(--sh)}
+.act svg{width:28px;height:28px;stroke:var(--accent)}
+.act b{font-size:15px} .act span{font-size:12.5px;color:var(--muted)}
+.media{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.mitem{position:relative;aspect-ratio:1;border-radius:10px;overflow:hidden;background:var(--surface2);border:0;padding:0}
+.mitem img,.mitem video{width:100%;height:100%;object-fit:cover;display:block}
+.mitem .tag{position:absolute;left:6px;bottom:6px;background:rgba(36,69,74,.85);color:#fff;font-size:11px;font-weight:650;padding:2px 7px;border-radius:999px}
+.sect{display:flex;justify-content:space-between;align-items:center;margin:22px 0 10px}
+.tools{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.tool{border:1px solid var(--line);background:var(--surface);border-radius:var(--r-md);padding:12px 6px;display:flex;flex-direction:column;align-items:center;gap:6px;font-size:13px;font-weight:600;text-decoration:none;color:var(--fg);text-align:center;min-height:86px;justify-content:center}
+.tool .ic{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;color:#fff;font-weight:750;font-size:15px}
+.tool .x{position:absolute}
+.toolwrap{position:relative}
+.toolwrap .del{position:absolute;top:-6px;right:-6px;width:24px;height:24px;border-radius:50%;border:0;background:var(--danger);color:#fff;font-size:14px;line-height:24px;display:none}
+.editing .toolwrap .del{display:block}
+.photo-stage{position:relative;border-radius:var(--r-lg);overflow:hidden;background:#1d2b2d;touch-action:none}
+.photo-stage img{display:block;width:100%;height:auto}
+.photo-stage canvas{position:absolute;inset:0;width:100%;height:100%}
+.toolbar{display:flex;gap:8px;overflow-x:auto;padding:2px 0 6px;scrollbar-width:none}
+.toolbar::-webkit-scrollbar{display:none}
+.tbtn{flex:none;border:1px solid var(--line);background:var(--surface);border-radius:var(--r-md);padding:9px 12px;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:12.5px;font-weight:650;min-width:78px}
+.tbtn svg{width:22px;height:22px;stroke:var(--fg)}
+.tbtn[aria-pressed="true"]{background:var(--fg);color:#fff;border-color:var(--fg)}
+.tbtn[aria-pressed="true"] svg{stroke:#fff}
+.cmp{position:relative;border-radius:var(--r-lg);overflow:hidden;background:#1d2b2d;user-select:none;touch-action:pan-y}
+.cmp img{display:block;width:100%;height:auto}
+.cmp .after{position:absolute;inset:0;clip-path:inset(0 0 0 50%)}
+.cmp .after img{width:100%;height:100%;object-fit:cover}
+.cmp .handle{position:absolute;top:0;bottom:0;left:50%;width:3px;background:#fff;transform:translateX(-1.5px);pointer-events:none}
+.cmp .handle::after{content:"";position:absolute;top:50%;left:50%;width:34px;height:34px;border-radius:50%;background:#fff;transform:translate(-50%,-50%);box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.cmp .lb{position:absolute;top:10px;padding:3px 9px;border-radius:999px;background:rgba(0,0,0,.55);color:#fff;font-size:12px;font-weight:650}
+.sheet-bg{position:fixed;inset:0;background:rgba(20,35,38,.45);z-index:60;display:flex;align-items:flex-end;justify-content:center}
+.sheet-bg[hidden]{display:none}
+.sheet{background:var(--bg);width:100%;max-width:620px;border-radius:20px 20px 0 0;padding:18px 16px calc(18px + var(--safe-b));max-height:88vh;overflow:auto}
+.sheet .grab{width:42px;height:5px;border-radius:3px;background:var(--line-input);opacity:.5;margin:-6px auto 12px}
+#toast{position:fixed;left:50%;bottom:calc(90px + var(--safe-b));transform:translateX(-50%);background:var(--fg);color:#fff;padding:10px 16px;border-radius:12px;font-size:14px;font-weight:550;z-index:90;max-width:90vw;text-align:center;box-shadow:var(--sh)}
+#toast[hidden]{display:none}
+.loading{display:grid;place-items:center;text-align:center;gap:14px;padding:30px 10px}
+.bar{height:6px;border-radius:3px;background:var(--surface2);overflow:hidden;width:100%;max-width:340px}
+.bar i{display:block;height:100%;width:8%;background:var(--accent);transition:width 1.2s}
+.loading img{max-width:260px;border-radius:14px;opacity:.6;filter:blur(1.5px)}
+/* Plan */
+.plan-wrap{background:#fff;border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden}
+.plan-wrap svg{display:block;width:100%;height:auto;max-height:62vh}
+.walls{display:grid;gap:8px}
+.wall{display:grid;grid-template-columns:34px 1fr 1fr 36px;gap:8px;align-items:center}
+.wall .n{font-weight:700;color:var(--muted);text-align:center}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);padding:10px;text-align:center}
+.stat b{display:block;font-size:18px}
+.stat span{font-size:12px;color:var(--muted)}
+.olist{display:grid;gap:8px}
+.oitem{display:flex;justify-content:space-between;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);padding:8px 10px;font-size:14px}
+.seg{display:inline-flex;border:1px solid var(--line-input);border-radius:var(--r-md);overflow:hidden}
+.seg button{border:0;background:var(--surface);padding:9px 12px;font-weight:600;font-size:14px}
+.seg button[aria-pressed="true"]{background:var(--fg);color:#fff}
+.mlist{display:grid;gap:6px}
+.mrow{display:flex;justify-content:space-between;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-sm);padding:8px 10px;font-size:14px}
+video.player{width:100%;border-radius:var(--r-lg);background:#000;display:block;max-height:60vh}
+@media (min-width:700px){ .big-actions{grid-template-columns:repeat(4,1fr)} .tools{grid-template-columns:repeat(5,1fr)} .media{grid-template-columns:repeat(5,1fr)} }
+@media print{
+  body *{visibility:hidden}
+  #printArea,#printArea *{visibility:visible}
+  #printArea{position:absolute;left:0;top:0;width:100%}
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-home" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-6h4v6"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></symbol>
+    <symbol id="i-plan" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h18v18H3z"/><path d="M3 12h7v9"/><path d="M14 3v6h7"/><path d="M14 13h3"/></symbol>
+    <symbol id="i-grid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+    <symbol id="i-camera" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13.5" r="3.5"/></symbol>
+    <symbol id="i-video" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="m16 10 5-3v10l-5-3z"/></symbol>
+    <symbol id="i-image" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-9 9"/></symbol>
+    <symbol id="i-ruler" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3 17 14-14 4 4L7 21z"/><path d="m7 13 2 2M10 10l2 2M13 7l2 2"/></symbol>
+    <symbol id="i-wand" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m4 20 11-11"/><path d="m14 4 1-2 1 2 2 1-2 1-1 2-1-2-2-1z"/><path d="m19 11 .7-1.3L21 9l-1.3-.7L19 7l-.7 1.3L17 9l1.3.7z"/></symbol>
+    <symbol id="i-back" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-dots" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></symbol>
+    <symbol id="i-sofa" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11V8a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3"/><path d="M2 13a2 2 0 0 1 4 0v2h12v-2a2 2 0 0 1 4 0v5H2z"/><path d="M5 18v2M19 18v2"/></symbol>
+    <symbol id="i-eraser" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m7 20-4-4L14 5l6 6-9 9z"/><path d="M7 20h13"/><path d="m9 10 6 6"/></symbol>
+    <symbol id="i-swap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h13l-3-3M20 16H7l3 3"/></symbol>
+    <symbol id="i-paint" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="15" height="6" rx="1.5"/><path d="M18 6h2v5h-8v3"/><rect x="10.5" y="14" width="3" height="7" rx="1"/></symbol>
+    <symbol id="i-lamp" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3h8l3 8H5z"/><path d="M12 11v8M8 21h8"/></symbol>
+    <symbol id="i-door" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M6 21V4h9v17"/><path d="M15 4l4 2v15"/><circle cx="12.5" cy="12.5" r=".8" fill="currentColor"/></symbol>
+    <symbol id="i-style" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a9 9 0 1 0 0 18c1.2 0 2-.8 2-1.8 0-.5-.2-.9-.5-1.2-.3-.3-.5-.7-.5-1.2 0-1 .8-1.8 1.8-1.8H17a4 4 0 0 0 4-4C21 6.4 17 3 12 3z"/><circle cx="7.5" cy="11" r="1"/><circle cx="10" cy="7" r="1"/><circle cx="15" cy="7.5" r="1"/></symbol>
+    <symbol id="i-text" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 9h8M8 12h5"/></symbol>
+    <symbol id="i-share" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M8 7l4-4 4 4"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></symbol>
+  </defs>
+</svg>
+
+<header class="top">
+  <button class="iconbtn" id="backBtn" aria-label="Retour" hidden><svg><use href="#i-back"/></svg></button>
+  <img src="logo-h.png" alt="Atelier Löwe" id="logo">
+  <div class="title" id="topTitle"></div>
+  <button class="iconbtn" id="menuBtn" aria-label="Options" hidden><svg><use href="#i-dots"/></svg></button>
+</header>
+
+<main>
+
+<!-- S01 Accueil -->
+<section class="view on" id="v-home" data-title="">
+  <div class="stack">
+    <div>
+      <h1 id="hello">Bonjour</h1>
+      <p class="muted small" style="margin:4px 0 0">Photos, plans cotés et rendus de vos chantiers, au même endroit.</p>
+    </div>
+    <div class="big-actions">
+      <button class="act" data-quick="photo"><svg><use href="#i-camera"/></svg><b>Photo</b><span>Prendre et retoucher</span></button>
+      <button class="act" data-quick="video"><svg><use href="#i-video"/></svg><b>Vidéo</b><span>Filmer la pièce</span></button>
+      <button class="act" data-quick="plan" style="grid-column:1/-1"><svg><use href="#i-plan"/></svg><b>Plan coté</b><span>Murs, portes, fenêtres</span></button>
+    </div>
+    <button class="btn primary block native-only" data-quick="scan" hidden><svg><use href="#i-plan"/></svg>Scanner la pièce (plan coté automatique)</button>
+  </div>
+  <div class="sect"><h2>Projets récents</h2><button class="btn ghost small" data-go="projects">Tout voir</button></div>
+  <div class="plist" id="recentList"></div>
+  <div class="sect"><h2>Outils de l'atelier</h2><button class="btn ghost small" data-go="tools">Gérer</button></div>
+  <div class="tools" id="homeTools"></div>
+</section>
+
+<!-- Projets -->
+<section class="view" id="v-projects" data-title="Projets">
+  <button class="btn primary block" id="newProject"><svg><use href="#i-plus"/></svg>Nouveau projet</button>
+  <div class="plist" id="projectList" style="margin-top:14px"></div>
+</section>
+
+<!-- S02 Projet -->
+<section class="view" id="v-project" data-title="Projet">
+  <div class="stack">
+    <div class="row" style="justify-content:space-between;align-items:flex-start;gap:8px">
+      <div style="min-width:0">
+        <h1 id="pName"></h1>
+        <p class="muted small" id="pMeta" style="margin:4px 0 0"></p>
+      </div>
+      <button class="btn" id="pRename" style="min-height:38px;flex:none">✎ Renommer</button>
+    </div>
+    <div id="ficheBox"></div>
+    <div class="grid3">
+      <button class="btn" data-cap="photo"><svg><use href="#i-camera"/></svg>Photo</button>
+      <button class="btn" data-cap="video"><svg><use href="#i-video"/></svg>Vidéo</button>
+      <button class="btn" data-cap="import"><svg><use href="#i-image"/></svg>Importer</button>
+    </div>
+    <div class="grid2">
+      <button class="btn native-only" id="pScan" hidden><svg><use href="#i-ruler"/></svg>Scanner la pièce</button>
+      <button class="btn" id="pPlan"><svg><use href="#i-plan"/></svg>Plan coté</button>
+    </div>
+    <button class="btn primary block" id="pExport"><svg><use href="#i-share"/></svg>Exporter le dossier…</button>
+    <div><label class="f" for="pNotes">Notes du chantier</label><textarea class="i" id="pNotes" placeholder="Accès, contraintes, matériaux, souhaits du client…"></textarea></div>
+  </div>
+  <div class="sect"><h2>Plans cotés</h2><div class="row" style="gap:4px"><button class="btn ghost small native-only" id="scanPlan" hidden><svg><use href="#i-ruler"/></svg>Scanner</button><button class="btn ghost small" id="photoPlan"><svg><use href="#i-camera"/></svg>Photo</button><button class="btn ghost small" id="addPlan"><svg><use href="#i-plus"/></svg>Plan</button></div></div>
+  <div class="plist" id="planList"></div>
+  <div class="sect" id="scanSect" hidden><h2>Scans de la pièce</h2></div>
+  <div class="plist" id="scanList" hidden></div>
+  <div class="sect"><h2>Photos et vidéos</h2></div>
+  <div class="media" id="mediaGrid"></div>
+  <div class="sect"><h2>Rendus</h2></div>
+  <div class="media" id="renderGrid"></div>
+</section>
+
+<!-- S04 Vidéo -->
+<section class="view" id="v-video" data-title="Vidéo">
+  <div class="stack">
+    <video class="player" id="player" playsinline controls preload="metadata"></video>
+    <input type="range" id="scrub" min="0" max="1000" value="0" aria-label="Position dans la vidéo" style="width:100%">
+    <p class="muted small" style="margin:0">Arrêtez la vidéo sur la bonne vue, puis prenez l'image : elle rejoint les photos du projet et se retouche comme une photo.</p>
+    <div class="grid2">
+      <button class="btn primary" id="grabFrame"><svg><use href="#i-camera"/></svg>Prendre cette image</button>
+      <button class="btn" id="autoFrames"><svg><use href="#i-grid"/></svg>4 vues auto</button>
+    </div>
+    <button class="btn danger block" id="delVideo"><svg><use href="#i-trash"/></svg>Supprimer la vidéo</button>
+  </div>
+</section>
+
+<!-- Photo (détail) -->
+<section class="view" id="v-photo" data-title="Photo">
+  <div class="stack">
+    <img id="photoView" alt="" style="width:100%;border-radius:18px;display:block">
+    <div class="grid2">
+      <button class="btn primary" id="photoEdit"><svg><use href="#i-wand"/></svg>Modifier</button>
+      <button class="btn" id="photoMeasure"><svg><use href="#i-ruler"/></svg>Mesurer</button>
+      <button class="btn" id="photoShare"><svg><use href="#i-share"/></svg>Partager</button>
+      <button class="btn danger" id="photoDel"><svg><use href="#i-trash"/></svg>Supprimer</button>
+    </div>
+    <p class="muted small" id="photoNote" style="margin:0"></p>
+  </div>
+</section>
+
+<!-- S07 Retouche -->
+<section class="view" id="v-edit" data-title="Modifier">
+  <div class="stack">
+    <div class="photo-stage" id="stage"><img id="editImg" alt="Photo à modifier"><canvas id="brush" hidden></canvas></div>
+    <div class="row" id="brushBar" hidden>
+      <span class="small muted" style="flex:none">Pinceau</span>
+      <input type="range" id="bSize" min="10" max="90" value="38" style="flex:1" aria-label="Taille du pinceau">
+      <button class="btn" id="bUndo" style="min-height:38px;padding:6px 10px">Annuler</button>
+      <button class="btn" id="bClear" style="min-height:38px;padding:6px 10px">Effacer</button>
+    </div>
+    <div class="toolbar" role="toolbar" aria-label="Outils">
+      <button class="tbtn" data-tool="meuble" aria-pressed="true"><svg><use href="#i-sofa"/></svg>Meuble</button>
+      <button class="tbtn" data-tool="effacer"><svg><use href="#i-eraser"/></svg>Enlever</button>
+      <button class="tbtn" data-tool="remplacer"><svg><use href="#i-swap"/></svg>Remplacer</button>
+      <button class="tbtn" data-tool="ouverture"><svg><use href="#i-door"/></svg>Ouverture</button>
+      <button class="tbtn" data-tool="surfaces"><svg><use href="#i-paint"/></svg>Couleurs</button>
+      <button class="tbtn" data-tool="deco"><svg><use href="#i-lamp"/></svg>Déco</button>
+      <button class="tbtn" data-tool="redesign"><svg><use href="#i-style"/></svg>Style</button>
+      <button class="tbtn" data-tool="libre"><svg><use href="#i-text"/></svg>Libre</button>
+    </div>
+
+    <div class="card stack" data-panel="meuble">
+      <div class="grid2">
+        <div><label class="f" for="mType">Meuble</label><select class="i" id="mType"></select></div>
+        <div><label class="f" for="mFin">Finition</label><select class="i" id="mFin"></select></div>
+      </div>
+      <div class="grid3">
+        <div><label class="f" for="mW">Largeur (cm)</label><input class="i" id="mW" type="number" inputmode="numeric" min="20" max="1200"></div>
+        <div><label class="f" for="mH">Hauteur (cm)</label><input class="i" id="mH" type="number" inputmode="numeric" min="20" max="400"></div>
+        <div><label class="f" for="mD">Profondeur</label><input class="i" id="mD" type="number" inputmode="numeric" min="10" max="150"></div>
+      </div>
+      <div><label class="f" for="mOu">Où le placer ?</label><input class="i" id="mOu" placeholder="Ex. contre le mur de gauche, à la place de l'armoire"></div>
+    </div>
+
+    <div class="card stack" data-panel="effacer" hidden>
+      <p class="small muted" style="margin:0">Coloriez en rouge ce qu'il faut enlever. Le reste de la pièce ne bouge pas.</p>
+      <input class="i" id="eNote" placeholder="Précision (facultatif) : ex. reconstituer le parquet dessous">
+    </div>
+
+    <div class="card stack" data-panel="remplacer" hidden>
+      <p class="small muted" style="margin:0">Coloriez l'élément à remplacer, puis dites par quoi.</p>
+      <input class="i" id="rTxt" placeholder="Ex. un îlot central en chêne avec plan en béton ciré">
+    </div>
+
+    <div class="card stack" data-panel="ouverture" hidden>
+      <p class="small muted" style="margin:0">Coloriez sur le mur l'endroit de l'ouverture.</p>
+      <div class="chips" id="oType"></div>
+      <div class="grid3">
+        <div><label class="f" for="oW">Largeur (cm)</label><input class="i" id="oW" type="number" inputmode="numeric" value="90"></div>
+        <div><label class="f" for="oH">Hauteur (cm)</label><input class="i" id="oH" type="number" inputmode="numeric" value="215"></div>
+        <div><label class="f" for="oFin">Cadre</label><select class="i" id="oFin"><option>acier noir</option><option>chêne</option><option>blanc</option><option>sans cadre</option><option>béton ciré</option></select></div>
+      </div>
+      <input class="i" id="oNote" placeholder="Précision : ex. on doit voir la pièce derrière, cuisine">
+    </div>
+
+    <div class="card stack" data-panel="surfaces" hidden>
+      <div><span class="f">Murs</span><div class="chips" id="wallChips"></div></div>
+      <div><span class="f">Sol</span><div class="chips" id="floorChips"></div></div>
+      <input class="i" id="sNote" placeholder="Autre teinte ou précision (facultatif)">
+    </div>
+
+    <div class="card stack" data-panel="deco" hidden>
+      <div class="chips" id="decoChips"></div>
+      <input class="i" id="dNote" placeholder="Précision : ex. tons terracotta, beaucoup de plantes">
+    </div>
+
+    <div class="card stack" data-panel="redesign" hidden>
+      <div class="chips" id="styleChips"></div>
+      <p class="small muted" style="margin:0">Garde les murs, fenêtres et volumes ; change mobilier, matières et ambiance.</p>
+    </div>
+
+    <div class="card stack" data-panel="libre" hidden>
+      <label class="f" for="lTxt">Décrivez la modification</label>
+      <textarea class="i" id="lTxt" placeholder="Ex. remplace les placards par un dressing sur mesure en chêne clair avec portes cannées, éclairage LED intégré"></textarea>
+    </div>
+
+    <div class="card stack">
+      <div class="grid2">
+        <div><label class="f" for="room">Pièce</label><select class="i" id="room"></select></div>
+        <div><label class="f" for="extra">En plus (facultatif)</label><input class="i" id="extra" placeholder="Ex. lumière du soir"></div>
+      </div>
+      <button class="btn primary block" id="generate"><svg><use href="#i-wand"/></svg>Créer le rendu</button>
+    </div>
+  </div>
+</section>
+
+<!-- S08 Chargement -->
+<section class="view" id="v-loading" data-title="Rendu en cours">
+  <div class="loading">
+    <img id="loadImg" alt="">
+    <b id="loadStep">Lecture de la pièce</b>
+    <div class="bar"><i id="loadBar"></i></div>
+    <p class="muted small" style="margin:0">Comptez 30 secondes à 1 minute.</p>
+  </div>
+</section>
+
+<!-- S09 Avant / après -->
+<section class="view" id="v-result" data-title="Avant / après">
+  <div class="stack">
+    <div class="cmp" id="cmp">
+      <img id="cBefore" alt="Avant">
+      <div class="after" id="cAfterWrap"><img id="cAfter" alt="Après"></div>
+      <div class="handle" id="cHandle"></div>
+      <span class="lb" style="left:10px">Avant</span><span class="lb" style="right:10px">Après</span>
+    </div>
+    <input type="range" id="cRange" min="0" max="100" value="50" aria-label="Glisser avant après" style="width:100%">
+    <p class="small muted" id="rCons" style="margin:0"></p>
+    <div class="grid2">
+      <button class="btn primary" id="rContinue"><svg><use href="#i-wand"/></svg>Modifier ce rendu</button>
+      <button class="btn" id="rRetry"><svg><use href="#i-swap"/></svg>Autre version</button>
+      <button class="btn" id="rShare"><svg><use href="#i-share"/></svg>Partager</button>
+      <button class="btn" id="rDone">Terminé</button>
+    </div>
+  </div>
+</section>
+
+<!-- S05 Plan coté -->
+<section class="view" id="v-plan" data-title="Plan coté">
+  <div class="stack">
+    <div class="row">
+      <input class="i" id="plName" aria-label="Nom du plan" style="flex:1">
+      <div class="seg" role="group" aria-label="Mode">
+        <button data-pmode="rect" aria-pressed="true">Rectangle</button>
+        <button data-pmode="murs">Murs</button>
+      </div>
+    </div>
+    <div class="plan-wrap" id="planSvgWrap"></div>
+    <div class="row" style="gap:8px;flex-wrap:wrap;align-items:center">
+      <button class="btn" id="selToggle" aria-pressed="false" style="min-height:38px">Sélectionner des murs</button>
+      <span class="small muted" id="selInfo" hidden></span>
+    </div>
+    <div class="card stack" id="selBar" hidden>
+      <div class="row" style="gap:8px;flex-wrap:wrap"><button class="chip" type="button" id="selAll">Toute la pièce</button><button class="chip" type="button" id="selNone">Aucun</button></div>
+      <p class="small muted" style="margin:0">Touchez les murs sur le dessin pour les ajouter ou les retirer.</p>
+      <div class="grid2">
+        <button class="btn" id="selElev">Vue de face</button>
+        <button class="btn" id="selZone">Nouveau plan de la zone</button>
+        <button class="btn" id="selSku">Exporter vers SketchUp</button>
+        <button class="btn" id="selEdit">Modifier ces murs</button>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="stat"><b id="stArea">0</b><span>Surface m²</span></div>
+      <div class="stat"><b id="stPer">0</b><span>Périmètre m</span></div>
+      <div class="stat"><b id="stWall">0</b><span>Murs m² (hors ouv.)</span></div>
+    </div>
+    <p class="small" id="closeWarn" style="margin:0;color:var(--danger)" hidden></p>
+
+    <div class="card stack" id="rectBox">
+      <div class="grid3">
+        <div><label class="f" for="rL">Longueur (cm)</label><input class="i" id="rL" type="number" inputmode="numeric"></div>
+        <div><label class="f" for="rW">Largeur (cm)</label><input class="i" id="rW" type="number" inputmode="numeric"></div>
+        <div><label class="f" for="rH">Hauteur (cm)</label><input class="i" id="rH" type="number" inputmode="numeric"></div>
+      </div>
+    </div>
+
+    <div class="card stack" id="wallsBox" hidden>
+      <p class="small muted" style="margin:0">Touchez un mur sur le dessin pour corriger sa longueur, son angle, le couper ou le supprimer. Sinon, faites le tour de la pièce dans le sens des aiguilles d'une montre : longueur de chaque mur, puis le sens du virage au coin suivant.</p>
+      <div class="walls" id="wallRows"></div>
+      <div class="grid2">
+        <button class="btn" id="addWall"><svg><use href="#i-plus"/></svg>Mur</button>
+        <button class="btn" id="closeWalls">Fermer la pièce</button>
+      </div>
+      <button class="btn block" id="squareWalls">Mettre les angles d'équerre</button>
+      <div><label class="f" for="wH">Hauteur sous plafond (cm)</label><input class="i" id="wH" type="number" inputmode="numeric"></div>
+    </div>
+
+    <div class="card stack">
+      <div class="row" style="justify-content:space-between"><h3>Portes, fenêtres, ouvertures</h3><button class="btn" id="addOpen" style="min-height:38px"><svg><use href="#i-plus"/></svg>Ajouter</button></div>
+      <div class="olist" id="openList"></div>
+    </div>
+
+    <div class="card stack">
+      <label class="f" for="plNotes">Notes de chantier</label>
+      <details id="plPhoto" hidden><summary class="small" style="cursor:pointer;font-weight:600">Voir le plan papier d'origine</summary><img alt="Plan papier photographié" style="width:100%;border-radius:12px;margin-top:8px"></details>
+      <textarea class="i" id="plNotes" placeholder="Ex. prise au centre du mur 2 à 30 cm, plinthes 8 cm, mur 3 pas d'équerre"></textarea>
+    </div>
+
+    <div class="grid3">
+      <button class="btn primary" id="plSave">Enregistrer</button>
+      <button class="btn" id="plPng"><svg><use href="#i-share"/></svg>Image</button>
+      <button class="btn" id="plPrint">PDF</button>
+    </div>
+    <button class="btn block" id="plSku"><svg><use href="#i-share"/></svg>Exporter pour SketchUp</button>
+    <button class="btn danger block" id="plDel"><svg><use href="#i-trash"/></svg>Supprimer ce plan</button>
+  </div>
+</section>
+
+<!-- S06 Mesure sur photo -->
+<section class="view" id="v-measure" data-title="Mesurer sur la photo">
+  <div class="stack">
+    <div class="seg" role="group" aria-label="Étape" style="width:100%;display:grid;grid-template-columns:1fr 1fr">
+      <button data-mmode="cal" aria-pressed="true">1. Étalonner</button>
+      <button data-mmode="mes">2. Mesurer</button>
+    </div>
+    <p class="small muted" id="mHelp" style="margin:0"></p>
+    <div class="photo-stage" id="mStage"><img id="mImg" alt="Photo à mesurer"><canvas id="mCan"></canvas></div>
+    <div class="card stack" id="calBox">
+      <div class="chips" id="refChips"></div>
+      <div class="row"><input class="i" id="calLen" type="number" inputmode="numeric" placeholder="Longueur réelle en cm" style="flex:1"><button class="btn primary" id="calOk">Valider</button></div>
+    </div>
+    <div class="mlist" id="mList"></div>
+    <p class="small muted" style="margin:0">Mesure approchée : fiable pour ce qui est dans le même plan que la cote de référence (même mur, photo prise bien en face). Vérifiez au mètre avant de fabriquer.</p>
+    <button class="btn block" id="mToPlan" hidden>Créer un plan rectangle avec ces mesures</button>
+  </div>
+</section>
+
+<!-- S10 Outils -->
+<section class="view" id="v-tools" data-title="Outils de l'atelier">
+  <div class="tools" id="allTools"></div>
+  <div class="grid2" style="margin-top:16px">
+    <button class="btn" id="addTool"><svg><use href="#i-plus"/></svg>Ajouter</button>
+    <button class="btn" id="editTools">Modifier</button>
+  </div>
+  <div class="card stack" style="margin-top:22px">
+    <h3>Sauvegarde</h3>
+    <p class="small muted" style="margin:0">Vos projets restent sur ce téléphone. Exportez-les de temps en temps pour les garder en sécurité ou les passer sur l'ordinateur.</p>
+    <div class="grid2"><button class="btn" id="exportAll">Exporter</button><button class="btn" id="importAll">Importer</button></div>
+    <p class="small muted" id="storageInfo" style="margin:0"></p>
+  </div>
+</section>
+
+</main>
+
+<nav class="tabs" aria-label="Navigation">
+  <button data-tab="home" aria-current="page"><svg><use href="#i-home"/></svg>Accueil</button>
+  <button data-tab="projects"><svg><use href="#i-folder"/></svg>Projets</button>
+  <button data-tab="capture"><svg><use href="#i-camera"/></svg>Capturer</button>
+  <button data-tab="tools"><svg><use href="#i-grid"/></svg>Outils</button>
+</nav>
+
+<!-- Feuilles -->
+<div class="sheet-bg" id="sheet" hidden><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle"><div class="grab"></div><div id="sheetBody"></div></div></div>
+<div id="toast" role="status" hidden></div>
+<div id="printArea" hidden></div>
+
+<input type="file" id="fPhoto" accept="image/*" capture="environment" hidden>
+<input type="file" id="fPlanPhoto" accept="image/*" capture="environment" hidden>
+<div id="trace" hidden></div>
+<input type="file" id="fVideo" accept="video/*" capture="environment" hidden>
+<input type="file" id="fImport" accept="image/*,video/*" multiple hidden>
+<input type="file" id="fBackup" accept="application/json,.json" hidden>
+
+<script>
+"use strict";
+/* ================= Réglages ================= */
+const WEBHOOK_IA = "https://lccps.app.n8n.cloud/webhook/atelier-lowe-rendu-ia-3";
+const EMAIL_ATELIER = "atelier@atelierlowe.fr";
+const MAX_SIDE = 1600;
+
+const ROOMS = {salon:"Salon", chambre:"Chambre", cuisine:"Cuisine", sdb:"Salle de bain", dressing:"Dressing", entree:"Entrée", bureau:"Bureau", cave:"Cave", couloir:"Couloir", exterieur:"Extérieur"};
+const MEUBLES = {
+  dressing:["Dressing sur mesure",240,250,60], cave:["Cave à vin sur mesure",200,240,45], cuisine:["Cuisine",360,230,62],
+  bibli:["Bibliothèque",220,240,35], tv:["Meuble TV suspendu",240,45,40], banquette:["Banquette avec rangements",180,45,50],
+  bureau:["Bureau intégré",160,75,60], sdb:["Meuble de salle de bain",120,55,48], verriere:["Verrière d'atelier",250,120,6],
+  escalier:["Habillage d'escalier",100,280,25], tete:["Tête de lit avec chevets",220,120,30], plan:["Plan en béton ciré",250,90,62]
+};
+const FINITIONS = ["Chêne naturel","Chêne clair","Noyer","Laque blanche","Laque vert sauge","Laque bleu canard","Noir mat","Béton ciré","Placage frêne","Cannage et chêne"];
+const OUVERTURES = ["Porte","Fenêtre","Baie vitrée","Verrière d'atelier","Arche","Passe-plat","Porte coulissante à galandage","Ouverture de mur porteur"];
+const MURS = [["Blanc cassé","#F1EDE4"],["Lin","#E4D9C6"],["Grège","#C9BBA6"],["Terracotta","#C47A55"],["Vert sauge","#A3B09A"],["Bleu canard","#24454A"],["Gris anthracite","#3E4245"],["Béton ciré gris","#A9A49B"],["Tadelakt sable","#D6BE98"]];
+const SOLS = [["Parquet chêne point de Hongrie","#B98A5A"],["Parquet chêne clair","#D2B58C"],["Béton ciré","#9E9A92"],["Carreaux de ciment","#8A6E5C"],["Tomettes","#B5624A"],["Marbre blanc","#ECE9E3"],["Microciment beige","#CFC3AE"]];
+const DECOS = ["Plantes","Luminaires","Tapis","Rideaux en lin","Tableaux","Coussins et plaids","Objets en céramique","Miroir"];
+const STYLES = ["Japandi","Moderne","Scandinave","Méditerranéen","Industriel","Bohème","Luxe contemporain","Minimaliste","Wabi-sabi","Haussmannien"];
+const DEFAULT_TOOLS = [
+  {n:"Gmail",u:"https://mail.google.com",c:"#C5452F",l:"M"},
+  {n:"Agenda",u:"https://calendar.google.com",c:"#3A6FB0",l:"31"},
+  {n:"Drive",u:"https://drive.google.com",c:"#2E8B57",l:"D"},
+  {n:"Agent n8n",u:"https://lccps.app.n8n.cloud",c:"#C2465B",l:"n8n"},
+  {n:"Simulateur",u:"https://atelier-lowe-simulateur.netlify.app",c:"#965A2E",l:"AL"},
+  {n:"Site (admin)",u:"https://atelierlowe.fr/wp-admin",c:"#24454A",l:"W"},
+  {n:"Instagram",u:"https://www.instagram.com",c:"#B8457A",l:"IG"},
+  {n:"Metricool",u:"https://app.metricool.com",c:"#2B5AA8",l:"Mc"},
+  {n:"Canva",u:"https://www.canva.com",c:"#1D8FA8",l:"C"},
+  {n:"Claude",u:"https://claude.ai",c:"#B7643F",l:"✳"}
+];
+
+/* ================= Outils ================= */
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2,7);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const fmtDate = t => new Date(t).toLocaleDateString("fr-FR", {day:"numeric", month:"short", year:"numeric"});
+let toastT;
+function toast(m, ms = 2800){ const t = $("#toast"); t.textContent = m; t.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => t.hidden = true, ms); }
+
+/* ================= Stockage (IndexedDB) ================= */
+const DB = {
+  db:null,
+  open(){ return this.db ? Promise.resolve(this.db) : new Promise((res, rej) => {
+    const r = indexedDB.open("lowe-atelier", 1);
+    r.onupgradeneeded = () => { const d = r.result;
+      d.createObjectStore("projects", {keyPath:"id"});
+      const m = d.createObjectStore("media", {keyPath:"id"}); m.createIndex("p", "projectId");
+      const p = d.createObjectStore("plans", {keyPath:"id"}); p.createIndex("p", "projectId");
+      d.createObjectStore("kv"); };
+    r.onsuccess = () => res(this.db = r.result); r.onerror = () => rej(r.error);
+  }); },
+  async tx(store, mode, fn){ const d = await this.open(); return new Promise((res, rej) => { const t = d.transaction(store, mode); const s = t.objectStore(store); const out = fn(s); t.oncomplete = () => res(out && out.result !== undefined ? out.result : out); t.onerror = () => rej(t.error); }); },
+  put(store, v){ return this.tx(store, "readwrite", s => s.put(v)); },
+  putKV(k, v){ return this.tx("kv", "readwrite", s => s.put(v, k)); },
+  async getKV(k){ const d = await this.open(); return new Promise(res => { const r = d.transaction("kv").objectStore("kv").get(k); r.onsuccess = () => res(r.result); r.onerror = () => res(undefined); }); },
+  async get(store, id){ const d = await this.open(); return new Promise((res, rej) => { const r = d.transaction(store).objectStore(store).get(id); r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); }); },
+  async all(store){ const d = await this.open(); return new Promise((res, rej) => { const r = d.transaction(store).objectStore(store).getAll(); r.onsuccess = () => res(r.result || []); r.onerror = () => rej(r.error); }); },
+  async byProject(store, pid){ const d = await this.open(); return new Promise((res, rej) => { const r = d.transaction(store).objectStore(store).index("p").getAll(pid); r.onsuccess = () => res(r.result || []); r.onerror = () => rej(r.error); }); },
+  del(store, id){ return this.tx(store, "readwrite", s => s.delete(id)); }
+};
+if(navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {});
+
+/* ================= État & navigation ================= */
+const S = {view:"home", hist:[], project:null, media:null, plan:null, edit:null, tool:"meuble", strokes:[], result:null, lastReq:null};
+const TAB_OF = {home:"home", projects:"projects", project:"projects", video:"projects", photo:"projects", edit:"projects", loading:"projects", result:"projects", plan:"projects", measure:"projects", tools:"tools"};
+function show(v, push = true){
+  if(push && S.view !== v) S.hist.push(S.view);
+  S.view = v;
+  $$(".view").forEach(x => x.classList.toggle("on", x.id === "v-" + v));
+  const sec = $("#v-" + v); let title = sec.dataset.title || "";
+  if(v === "project" && S.project) title = S.project.nom;
+  $("#topTitle").textContent = title;
+  $("#logo").hidden = v !== "home";
+  $("#backBtn").hidden = v === "home" || v === "projects" || v === "tools";
+  $("#menuBtn").hidden = v !== "project";
+  $$("nav.tabs button").forEach(b => b.setAttribute("aria-current", b.dataset.tab === TAB_OF[v] ? "page" : "false"));
+  window.scrollTo(0, 0);
+}
+function back(){
+  if(S.view === "loading") return;
+  let v = S.hist.pop();
+  while(v === "loading") v = S.hist.pop();
+  if(!v) v = "home";
+  show(v, false); refresh(v);
+}
+$("#backBtn").onclick = back;
+function refresh(v){
+  if(v === "home") renderHome();
+  if(v === "projects") renderProjects();
+  if(v === "project") renderProject();
+}
+$$("nav.tabs button").forEach(b => b.onclick = () => {
+  const t = b.dataset.tab;
+  if(t === "capture") return quickCapture();
+  S.hist = []; show(t, false); refresh(t); if(t === "tools") renderTools();
+});
+$$("[data-go]").forEach(b => b.onclick = () => { const t = b.dataset.go; S.hist = []; show(t, false); refresh(t); if(t === "tools") renderTools(); });
+
+/* ================= Feuille ================= */
+function sheet(html, onOpen){
+  $("#sheetBody").innerHTML = html; $("#sheet").hidden = false;
+  const f = $("#sheetBody").querySelector("input,select,textarea"); if(f) setTimeout(() => f.focus(), 60);
+  onOpen && onOpen($("#sheetBody"));
+}
+function closeSheet(){ $("#sheet").hidden = true; $("#sheetBody").innerHTML = ""; }
+$("#sheet").addEventListener("click", e => { if(e.target.id === "sheet") closeSheet(); });
+document.addEventListener("keydown", e => { if(e.key === "Escape" && !$("#sheet").hidden) closeSheet(); });
+
+/* ================= Projets ================= */
+async function projects(){ return (await DB.all("projects")).sort((a, b) => b.modifie - a.modifie); }
+async function touch(p){ p.modifie = Date.now(); await DB.put("projects", p); }
+async function coverOf(pid){
+  const m = await DB.byProject("media", pid);
+  const im = m.filter(x => x.type !== "video" && x.type !== "scan").sort((a, b) => b.cree - a.cree)[0];
+  return im ? im.data : "";
+}
+function projItem(p, cover){
+  return `<button class="pitem" data-pid="${p.id}"><span class="th" style="${cover ? `background-image:url('${cover}')` : ""}">${cover ? "" : '<svg><use href="#i-folder"/></svg>'}</span><span class="meta"><b>${esc(p.nom)}</b><span class="small muted">${esc([p.client, p.adresse].filter(Boolean).join(" · ") || "Sans client")} · ${fmtDate(p.modifie)}</span></span></button>`;
+}
+async function renderList(el, list){
+  if(!list.length){ el.innerHTML = `<div class="empty"><svg><use href="#i-folder"/></svg><div>Aucun projet pour l'instant.</div><div class="small">Une photo, une vidéo ou un plan crée un projet automatiquement.</div></div>`; return; }
+  const covers = await Promise.all(list.map(p => coverOf(p.id)));
+  el.innerHTML = list.map((p, i) => projItem(p, covers[i])).join("");
+  el.querySelectorAll("[data-pid]").forEach(b => b.onclick = () => openProject(b.dataset.pid));
+}
+async function renderHome(){
+  const h = new Date().getHours();
+  $("#hello").textContent = h < 5 || h >= 18 ? "Bonsoir" : "Bonjour";
+  renderList($("#recentList"), (await projects()).slice(0, 3));
+  renderToolGrid($("#homeTools"), (await getTools()).slice(0, 6), false);
+}
+async function renderProjects(){ renderList($("#projectList"), await projects()); }
+function projectForm(p = {}){
+  const c = p.fiche || {};
+  const f = (id, lab, val, ph, type = "text", extra = "") => `<div><label class="f" for="${id}">${lab}</label><input class="i" id="${id}" type="${type}" ${extra} value="${esc(val || "")}" placeholder="${ph}"></div>`;
+  return `<h2 id="sheetTitle">${p.id ? "Chantier et fiche client" : "Nouveau chantier"}</h2>
+  <form id="pf" class="stack" style="margin-top:14px">
+    ${f("pfN", "Nom du chantier (dossier)", p.nom, "Ex. Dressing chambre parentale", "text", "required")}
+    <div class="seg" role="tablist" style="align-self:flex-start"><button type="button" data-pft="c" aria-pressed="true">Fiche client</button><button type="button" data-pft="n" aria-pressed="false">Notes</button></div>
+    <div class="stack" id="pfTabC">
+      <div class="grid2">${f("pfP", "Prénom", c.prenom, "Prénom", "text", 'autocomplete="given-name"')}${f("pfC", "Nom", c.nom ?? (p.fiche ? "" : p.client), "Nom", "text", 'autocomplete="family-name"')}</div>
+      ${f("pfA", "Adresse", c.adresse ?? p.adresse, "N° et rue", "text", 'autocomplete="street-address"')}
+      <div class="grid2">${f("pfZ", "Code postal", c.cp, "66000", "text", 'inputmode="numeric" autocomplete="postal-code"')}${f("pfV", "Ville", c.ville, "Perpignan", "text", 'autocomplete="address-level2"')}</div>
+      ${f("pfT", "Téléphone", c.tel, "06 12 34 56 78", "tel", 'autocomplete="tel"')}
+      ${f("pfE", "Adresse mail", c.mail, "client@exemple.fr", "email", 'autocomplete="email"')}
+    </div>
+    <div id="pfTabN" hidden><label class="f" for="pfNo">Notes sur le client</label><textarea class="i" id="pfNo" rows="7" placeholder="Disponibilités, code d'accès, préférences, budget…">${esc(c.notes || "")}</textarea></div>
+    <button class="btn primary block" type="submit">${p.id ? "Enregistrer" : "Créer"}</button>
+  </form>`;
+}
+function askProject(p, done){
+  sheet(projectForm(p), b => {
+    b.querySelectorAll("[data-pft]").forEach(x => x.onclick = () => { b.querySelectorAll("[data-pft]").forEach(y => y.setAttribute("aria-pressed", y === x ? "true" : "false")); b.querySelector("#pfTabC").hidden = x.dataset.pft !== "c"; b.querySelector("#pfTabN").hidden = x.dataset.pft !== "n"; });
+    b.querySelector("#pf").onsubmit = async e => {
+      e.preventDefault();
+      const nom = $("#pfN").value.trim(); if(!nom) return;
+      const v = id => $(id).value.trim();
+      const fiche = {prenom:v("#pfP"), nom:v("#pfC"), adresse:v("#pfA"), cp:v("#pfZ"), ville:v("#pfV"), tel:v("#pfT"), mail:v("#pfE"), notes:$("#pfNo").value.trim()};
+      const client = [fiche.prenom, fiche.nom].filter(Boolean).join(" ");
+      const adresse = [fiche.adresse, [fiche.cp, fiche.ville].filter(Boolean).join(" ")].filter(Boolean).join(", ");
+      const np = Object.assign({id:uid(), cree:Date.now()}, p, {nom, client, adresse, fiche, modifie:Date.now()});
+      await DB.put("projects", np); closeSheet(); done && done(np);
+    };
+  });
+}
+/* Liens fiche client : carte, appel / message, mail */
+function openExt(url){
+  if(window.ReactNativeWebView){ window.ReactNativeWebView.postMessage(JSON.stringify({type:"open", url})); return; }
+  if(/^https?:/i.test(url)) window.open(url, "_blank", "noopener"); else location.href = url;
+}
+function telNum(t){ return (t || "").replace(/[^\d+]/g, ""); }
+function waNum(t){ let n = telNum(t).replace(/^\+/, ""); if(/^0\d{9}$/.test(n)) n = "33" + n.slice(1); return n; }
+function mapsUrl(a){ return "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(a); }
+function ficheHtml(p){
+  const c = p.fiche || {nom:p.client, adresse:p.adresse};
+  const nom = [c.prenom, c.nom].filter(Boolean).join(" ");
+  const adr = [c.adresse, [c.cp, c.ville].filter(Boolean).join(" ")].filter(Boolean).join(", ");
+  if(!nom && !adr && !c.tel && !c.mail) return `<button class="btn ghost block" id="ficheAdd">+ Ajouter la fiche client</button>`;
+  return `<div class="card stack" style="gap:8px;padding:12px 14px">
+    <div class="row" style="justify-content:space-between"><b>${esc(nom || "Client")}</b><button class="btn ghost small" id="ficheEdit">Modifier</button></div>
+    ${adr ? `<button class="link-row" data-ext="${esc(mapsUrl(adr))}">📍 <span>${esc(adr)}</span></button>` : ""}
+    ${c.tel ? `<button class="link-row" id="ficheTel">📞 <span>${esc(c.tel)}</span></button>` : ""}
+    ${c.mail ? `<button class="link-row" data-ext="mailto:${esc(c.mail)}">✉️ <span>${esc(c.mail)}</span></button>` : ""}
+    ${c.notes ? `<p class="small muted" style="margin:0;white-space:pre-wrap">${esc(c.notes)}</p>` : ""}
+  </div>`;
+}
+function bindFiche(){
+  const p = S.project, c = p.fiche || {};
+  const edit = () => askProject(S.project, np => { S.project = np; renderProject(); toast("Fiche enregistrée."); });
+  $$("#ficheBox [data-ext]").forEach(x => x.onclick = () => openExt(x.dataset.ext));
+  const fe = $("#ficheEdit") || $("#ficheAdd"); if(fe) fe.onclick = edit;
+  const ft = $("#ficheTel"); if(ft) ft.onclick = () => sheet(`<h2 id="sheetTitle">${esc(c.tel)}</h2><div class="stack" style="margin-top:14px">
+    <button class="btn primary block" data-x="tel:${telNum(c.tel)}">📞 Appeler</button>
+    <button class="btn block" data-x="sms:${telNum(c.tel)}">💬 Envoyer un SMS</button>
+    <button class="btn block" data-x="https://wa.me/${waNum(c.tel)}">WhatsApp</button></div>`, b => b.querySelectorAll("[data-x]").forEach(x => x.onclick = () => { closeSheet(); openExt(x.dataset.x); }));
+}
+$("#newProject").onclick = () => askProject({}, p => openProject(p.id));
+async function ensureProject(){
+  if(S.project) return S.project;
+  const p = {id:uid(), nom:"Chantier du " + new Date().toLocaleDateString("fr-FR", {day:"numeric", month:"long"}), client:"", adresse:"", cree:Date.now(), modifie:Date.now()};
+  await DB.put("projects", p); S.project = p; return p;
+}
+async function openProject(id){
+  S.project = await DB.get("projects", id);
+  if(!S.project) return toast("Projet introuvable.");
+  show("project"); renderProject();
+}
+async function renderProject(){
+  const p = S.project; if(!p) return;
+  $("#pName").textContent = p.nom; $("#topTitle").textContent = p.nom;
+  $("#pMeta").textContent = "Créé le " + fmtDate(p.cree);
+  $("#pNotes").value = p.notes || "";
+  $("#ficheBox").innerHTML = ficheHtml(p); bindFiche();
+  const [media, plans] = await Promise.all([DB.byProject("media", p.id), DB.byProject("plans", p.id)]);
+  media.sort((a, b) => b.cree - a.cree);
+  const scans = media.filter(m => m.type === "scan"), src = media.filter(m => m.type !== "rendu" && m.type !== "scan"), ren = media.filter(m => m.type === "rendu");
+  $("#mediaGrid").innerHTML = src.length ? src.map(mItem).join("") : `<p class="muted small" style="grid-column:1/-1;margin:0">Pas encore de photo ni de vidéo.</p>`;
+  $("#renderGrid").innerHTML = ren.length ? ren.map(mItem).join("") : `<p class="muted small" style="grid-column:1/-1;margin:0">Les pièces modifiées apparaîtront ici.</p>`;
+  $$("#mediaGrid [data-mid], #renderGrid [data-mid]").forEach(b => b.onclick = () => openMedia(b.dataset.mid));
+  $("#planList").innerHTML = plans.length ? plans.sort((a, b) => b.modifie - a.modifie).map(pl => `<button class="pitem" data-plid="${pl.id}"><span class="th">${planThumb(pl)}</span><span class="meta"><b>${esc(pl.nom)}</b><span class="small muted">${fmtM2(planArea(pl))} m² · H ${pl.hauteur || "?"} cm · ${(pl.ouvertures || []).length} ouverture(s)</span></span></button>`).join("") : `<p class="muted small" style="margin:0">Aucun plan. Ajoutez-en un, ou mesurez sur une photo.</p>`;
+  $$("#planList [data-plid]").forEach(b => b.onclick = () => openPlan(b.dataset.plid));
+  $("#scanSect").hidden = $("#scanList").hidden = !scans.length;
+  $("#scanList").innerHTML = scans.map(m => `<div class="pitem" style="cursor:default"><span class="th"><svg><use href="#i-ruler"/></svg></span><span class="meta"><b>${esc(m.nom || "Scan")}</b><span class="small muted">${m.resume || "scan LiDAR"}</span></span><button class="btn ghost small" data-rescan="${m.id}">Plan coté</button></div>`).join("");
+  $$("#scanList [data-rescan]").forEach(b => b.onclick = () => scanToPlan(b.dataset.rescan));
+  const vids = $$("#mediaGrid video"); vids.forEach(v => { const m = media.find(x => x.id === v.dataset.v); if(m) { v.addEventListener("loadedmetadata", () => { try { if(v.currentTime < 0.1) v.currentTime = 0.1; } catch(e){} }, { once: true }); v.src = URL.createObjectURL(m.blob) + "#t=0.1"; } });
+}
+function mItem(m){
+  const tag = m.planPhoto ? "Plan papier" : ({photo:"Photo", video:"Vidéo", frame:"Vue vidéo", rendu:"Rendu"}[m.type] || "");
+  const inner = m.type === "video" ? `<video data-v="${m.id}" muted playsinline preload="metadata"></video>` : `<img src="${m.data}" alt="${tag}" loading="lazy">`;
+  return `<button class="mitem" data-mid="${m.id}" aria-label="${tag}">${inner}<span class="tag">${tag}</span></button>`;
+}
+$("#menuBtn").onclick = () => sheet(`<h2 id="sheetTitle">${esc(S.project.nom)}</h2><div class="stack" style="margin-top:14px">
+  <button class="btn block" id="pmEdit">Renommer / fiche client</button>
+  <button class="btn danger block" id="pmDel"><svg><use href="#i-trash"/></svg>Supprimer le projet</button></div>`, b => {
+  b.querySelector("#pmEdit").onclick = () => askProject(S.project, p => { S.project = p; renderProject(); });
+  b.querySelector("#pmDel").onclick = async () => {
+    if(!confirmBox("Supprimer ce projet, ses photos, vidéos, plans et rendus ?")) return;
+    const id = S.project.id;
+    for(const m of await DB.byProject("media", id)) await DB.del("media", m.id);
+    for(const p of await DB.byProject("plans", id)) await DB.del("plans", p.id);
+    await DB.del("projects", id); S.project = null; closeSheet(); S.hist = []; show("projects", false); renderProjects(); toast("Projet supprimé.");
+  };
+});
+function confirmBox(m){ return window.confirm(m); }
+$("#pRename").onclick = () => askProject(S.project, p => { S.project = p; renderProject(); toast("Chantier renommé."); });
+$("#pPlan").onclick = () => sheet(`<h2 id="sheetTitle">Plan coté</h2><div class="stack" style="margin-top:14px">
+  <button class="btn primary block" id="ppDraw"><svg><use href="#i-plan"/></svg>Dessiner un plan</button>
+  <button class="btn block" id="ppPhoto"><svg><use href="#i-camera"/></svg>Photographier un plan papier</button>
+  <p class="small muted" style="margin:0">La photo est rangée dans le dossier. Vous repassez ensuite sur les coins du plan du bout du doigt et vous recopiez les cotes : l'appli en fait un plan coté.</p></div>`, b => {
+  b.querySelector("#ppDraw").onclick = () => { closeSheet(); newPlan(); };
+  b.querySelector("#ppPhoto").onclick = () => { closeSheet(); $("#fPlanPhoto").click(); };
+});
+$("#photoPlan").onclick = () => $("#fPlanPhoto").click();
+$("#pScan").onclick = () => $("#scanPlan").click();
+$("#pNotes").addEventListener("change", async e => { if(!S.project) return; S.project.notes = e.target.value; await touch(S.project); });
+$("#pExport").onclick = () => exportSheet();
+
+
+
+/* ================= Plan papier photographié → plan coté ================= */
+$("#fPlanPhoto").addEventListener("change", async e => {
+  const f = e.target.files[0]; e.target.value = ""; if(!f) return;
+  const p = await ensureProject();
+  let m; try { m = {id:uid(), projectId:p.id, type:"photo", planPhoto:true, nom:"Plan papier", data:await fileToJpeg(f), cree:Date.now()}; await DB.put("media", m); await touch(p); }
+  catch(err){ return toast("Cette photo n'a pas pu être lue."); }
+  toast("Photo du plan rangée dans le dossier.");
+  traceStart(m);
+});
+function traceStart(m){
+  const T = {m, pts:[], done:false, walls:null, cm:[], manual:[]};
+  const box = $("#trace"); box.hidden = false;
+  box.innerHTML = `<div class="stack">
+    <div class="row" style="justify-content:space-between;align-items:center"><h2 style="margin:0">Plan papier</h2><button class="btn ghost small" id="trClose">Fermer</button></div>
+    <p class="small" id="trHelp" style="margin:0">Touchez les coins de la pièce <b>un par un, en faisant le tour</b>. Vous pouvez commencer par n'importe quel coin.</p>
+    <div class="tw" id="trWrap"><img src="${m.data}" alt="Plan photographié"><svg id="trSvg"></svg></div>
+    <div class="row" id="trBtns" style="gap:8px;flex-wrap:wrap"><button class="btn" id="trUndo">↶ Annuler le dernier point</button><button class="btn primary" id="trOk" disabled>Terminer le tracé</button></div>
+    <div class="stack" id="trCotes" hidden></div>
+  </div>`;
+  const img = box.querySelector("img"), svg = box.querySelector("#trSvg");
+  const close = () => { box.hidden = true; box.innerHTML = ""; };
+  box.querySelector("#trClose").onclick = () => { close(); if(S.project){ show("project"); renderProject(); } };
+  const draw = () => {
+    const W = img.naturalWidth, H = img.naturalHeight; if(!W) return;
+    svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+    const r = Math.max(W, H) / 90, sw = Math.max(W, H) / 280;
+    const P = T.done ? T.ord : T.pts;
+    let h = P.length > 1 ? `<polyline points="${P.map(q => q.join(",")).join(" ")}${T.done ? " " + P[0].join(",") : ""}" fill="${T.done ? "rgba(150,90,46,.12)" : "none"}" stroke="#965A2E" stroke-width="${sw}" stroke-linejoin="round"/>` : "";
+    h += P.map((q, i) => `<circle cx="${q[0]}" cy="${q[1]}" r="${r}" fill="${i === 0 ? "#2E6B4A" : "#965A2E"}" stroke="#fff" stroke-width="${sw / 2}"/>`).join("");
+    if(T.done) h += P.map((q, i) => { const n = P[(i + 1) % P.length], x = (q[0] + n[0]) / 2, y = (q[1] + n[1]) / 2; return `<g><rect x="${x - r * 2.2}" y="${y - r * 1.3}" width="${r * 4.4}" height="${r * 2.6}" rx="${r * .6}" fill="#24454A"/><text x="${x}" y="${y + r * .55}" text-anchor="middle" font-size="${r * 1.6}" font-weight="700" fill="#fff" font-family="system-ui">M${i + 1}</text></g>`; }).join("");
+    svg.innerHTML = h;
+    box.querySelector("#trOk").disabled = T.pts.length < 3;
+  };
+  img.onload = draw; if(img.complete) draw();
+  box.querySelector("#trWrap").onclick = e => {
+    if(T.done) return;
+    const b = img.getBoundingClientRect(); const k = img.naturalWidth / b.width;
+    T.pts.push([(e.clientX - b.left) * k, (e.clientY - b.top) * k]); draw();
+  };
+  box.querySelector("#trUndo").onclick = () => { T.pts.pop(); draw(); };
+  box.querySelector("#trOk").onclick = () => {
+    if(T.pts.length < 3) return;
+    let P = T.pts.slice(); let a = 0; for(let i = 0; i < P.length; i++){ const q = P[i], n = P[(i + 1) % P.length]; a += q[0] * n[1] - n[0] * q[1]; }
+    if(a < 0) P.reverse();               // toujours dans le sens des aiguilles d'une montre
+    T.ord = P; T.done = true;
+    const n = P.length, hd = P.map((q, i) => { const nx = P[(i + 1) % n]; return Math.atan2(nx[1] - q[1], nx[0] - q[0]) * 180 / Math.PI; });
+    T.walls = P.map((q, i) => { const nx = P[(i + 1) % n]; let t = hd[(i + 1) % n] - hd[i]; while(t > 180) t -= 360; while(t <= -180) t += 360;
+      const s90 = Math.round(t / 90) * 90, s45 = Math.round(t / 45) * 45; t = Math.abs(t - s90) <= 15 ? s90 : Math.abs(t - s45) <= 8 ? s45 : Math.round(t);
+      return {px:Math.hypot(nx[0] - q[0], nx[1] - q[1]), turn:t}; });
+    T.cm = T.walls.map(() => ""); T.manual = T.walls.map(() => false);
+    box.querySelector("#trBtns").hidden = true;
+    box.querySelector("#trHelp").innerHTML = `Recopiez les cotes écrites sur le plan. <b>Une seule suffit</b> pour démarrer : les autres sont estimées d'après le dessin (en gris) et vous les corrigez si le plan les indique.`;
+    const c = box.querySelector("#trCotes"); c.hidden = false;
+    c.innerHTML = `${T.walls.map((w, i) => `<div class="wall"><span class="n">M${i + 1}</span><input class="i" type="number" inputmode="numeric" placeholder="cm" aria-label="Cote du mur ${i + 1} en cm" data-tc="${i}"><span class="small muted">${w.turn === 90 ? "↱" : w.turn === -90 ? "↰" : w.turn + "°"}</span></div>`).join("")}
+      <div><label class="f" for="trH">Hauteur sous plafond (cm)</label><input class="i" id="trH" type="number" inputmode="numeric" value="250"></div>
+      <div class="row" style="gap:8px;flex-wrap:wrap"><button class="btn" id="trRedo">Recommencer le tracé</button><button class="btn primary" id="trMake">Créer le plan coté</button></div>`;
+    const ins = [...c.querySelectorAll("[data-tc]")];
+    const upd = () => {
+      const ref = T.walls.map((w, i) => T.manual[i] && +T.cm[i] > 0 ? T.cm[i] / w.px : null).filter(Boolean);
+      const k = ref.length ? ref.reduce((x, y) => x + y) / ref.length : 0;
+      ins.forEach((x, i) => { if(T.manual[i]) { x.style.color = ""; return; } x.value = k ? Math.round(T.walls[i].px * k) : ""; x.style.color = "var(--muted)"; });
+    };
+    ins.forEach((x, i) => x.oninput = () => { T.cm[i] = +x.value; T.manual[i] = x.value !== ""; upd(); });
+    c.querySelector("#trRedo").onclick = () => { close(); traceStart(m); };
+    c.querySelector("#trMake").onclick = async () => {
+      const lens = ins.map(x => +x.value || 0);
+      if(!lens.some(Boolean)) return toast("Indiquez au moins une cote.");
+      const est = ins.map((x, i) => !T.manual[i]).filter(Boolean).length;
+      const murs = T.walls.map((w, i) => ({len:lens[i], turn:w.turn})), haut = +c.querySelector("#trH").value || 250;
+      close();
+      newPlan({mode:"murs", nom:"Plan papier " + new Date().toLocaleDateString("fr-FR"), hauteur:haut, murs, ouvertures:[], photoId:m.id,
+        notes:"Tracé d'après la photo d'un plan papier." + (est ? ` ${est} cote(s) estimée(s) d'après le dessin : à vérifier.` : "")});
+      await DB.put("plans", Object.assign(S.plan, {modifie:Date.now()})); await touch(S.project);
+      toast(est ? "Plan créé. Vérifiez les cotes estimées." : "Plan coté créé.");
+    };
+    draw(); setTimeout(() => ins[0]?.focus(), 80);
+  };
+}
+
+/* ================= Capture ================= */
+let capTarget = null;
+function quickCapture(){
+  sheet(`<h2 id="sheetTitle">Capturer</h2><p class="small muted" style="margin:6px 0 14px">${S.project ? "Dans le projet « " + esc(S.project.nom) + " »." : "Un nouveau projet sera créé."}</p>
+  <div class="grid3"><button class="btn" data-c="photo"><svg><use href="#i-camera"/></svg>Photo</button><button class="btn" data-c="video"><svg><use href="#i-video"/></svg>Vidéo</button><button class="btn" data-c="import"><svg><use href="#i-image"/></svg>Importer</button></div>
+  <button class="btn ghost block" id="capOther" style="margin-top:10px">Choisir un autre projet</button>`, b => {
+    b.querySelectorAll("[data-c]").forEach(x => x.onclick = () => { closeSheet(); capture(x.dataset.c); });
+    b.querySelector("#capOther").onclick = async () => {
+      const list = await projects();
+      sheet(`<h2 id="sheetTitle">Quel projet ?</h2><div class="plist" style="margin-top:12px">${list.map(p => `<button class="pitem" data-p="${p.id}"><span class="meta"><b>${esc(p.nom)}</b><span class="small muted">${esc(p.client || "")}</span></span></button>`).join("")}<button class="btn primary block" id="capNew"><svg><use href="#i-plus"/></svg>Nouveau projet</button></div>`, bb => {
+        bb.querySelectorAll("[data-p]").forEach(x => x.onclick = async () => { S.project = await DB.get("projects", x.dataset.p); quickCapture(); });
+        bb.querySelector("#capNew").onclick = () => askProject({}, p => { S.project = p; quickCapture(); });
+      });
+    };
+  });
+}
+function capture(kind){ capTarget = kind; ({photo:"#fPhoto", video:"#fVideo", import:"#fImport"})[kind] && $(({photo:"#fPhoto", video:"#fVideo", import:"#fImport"})[kind]).click(); }
+$$("[data-cap]").forEach(b => b.onclick = () => capture(b.dataset.cap));
+$$("[data-quick]").forEach(b => b.onclick = async () => {
+  const q = b.dataset.quick;
+  if(q === "photo" || q === "video") return capture(q);
+  if(q === "plan"){ await ensureProject(); return newPlan(); }
+  if(q === "mesure"){ capTarget = "mesure"; $("#fPhoto").click(); }
+  if(q === "scan") return startScan();
+});
+["#fPhoto", "#fVideo", "#fImport"].forEach(sel => $(sel).addEventListener("change", async e => {
+  const files = [...e.target.files]; e.target.value = "";
+  if(!files.length) return;
+  const p = await ensureProject();
+  let last = null;
+  for(const f of files){
+    try {
+      if(f.type.startsWith("video/")){
+        if(f.size > 300e6) { toast("Vidéo trop lourde (300 Mo max). Filmez plus court."); continue; }
+        last = {id:uid(), projectId:p.id, type:"video", blob:f, nom:f.name, cree:Date.now()};
+      } else {
+        last = {id:uid(), projectId:p.id, type:"photo", data:await fileToJpeg(f), cree:Date.now()};
+      }
+      await DB.put("media", last);
+    } catch(err){ toast("Ce fichier n'a pas pu être lu."); }
+  }
+  await touch(p);
+  if(!last) return;
+  const mode = capTarget; capTarget = null;
+  if(mode === "mesure" && last.type !== "video") return openMeasure(last);
+  if(files.length === 1) return openMedia(last.id);
+  show("project"); renderProject(); toast(files.length + " fichiers ajoutés.");
+}));
+function loadImg(src){ return new Promise((res, rej) => { const im = new Image(); im.onload = () => res(im); im.onerror = rej; im.src = src; }); }
+async function fileToJpeg(file){
+  const url = URL.createObjectURL(file);
+  try { const im = await loadImg(url); return toJpeg(im, im.naturalWidth, im.naturalHeight); }
+  finally { URL.revokeObjectURL(url); }
+}
+function toJpeg(src, w, h, q = .88){
+  const k = Math.min(1, MAX_SIDE / Math.max(w, h)); const c = document.createElement("canvas");
+  c.width = Math.round(w * k); c.height = Math.round(h * k); c.getContext("2d").drawImage(src, 0, 0, c.width, c.height);
+  return c.toDataURL("image/jpeg", q);
+}
+function dataUrlToBlob(d){ const [h, b] = d.split(","); const bin = atob(b); const u = new Uint8Array(bin.length); for(let i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i); return new Blob([u], {type:(h.match(/:(.*?);/) || [])[1] || "image/jpeg"}); }
+async function shareImage(dataUrl, name){
+  const blob = dataUrl instanceof Blob ? dataUrl : dataUrlToBlob(dataUrl);
+  if(window.ReactNativeWebView){ // appli iPhone : le partage passe par l'appli (Fichiers, AirDrop, Mail, SketchUp…)
+    const b64 = await new Promise(r => { const fr = new FileReader(); fr.onload = () => r(String(fr.result).split(",")[1]); fr.readAsDataURL(blob); });
+    window.ReactNativeWebView.postMessage(JSON.stringify({type:"file", name, b64})); return;
+  }
+  const file = new File([blob], name, {type:blob.type});
+  if(navigator.canShare && navigator.canShare({files:[file]})){ try { await navigator.share({files:[file], title:name}); return; } catch(e){ if(e.name === "AbortError") return; } }
+  const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+}
+
+/* ================= Médias ================= */
+async function openMedia(id){
+  const m = await DB.get("media", id); if(!m) return;
+  S.media = m;
+  if(!S.project || S.project.id !== m.projectId) S.project = await DB.get("projects", m.projectId);
+  if(m.type === "video") return openVideo(m);
+  $("#photoView").src = m.data;
+  $("#v-photo").dataset.title = {photo:"Photo", frame:"Vue extraite", rendu:"Rendu"}[m.type] || "Photo";
+  $("#photoNote").textContent = m.consigne ? "Demande : " + m.consigne : "";
+  show("photo");
+}
+$("#photoEdit").onclick = () => openEditor(S.media.data, S.media.id);
+$("#photoMeasure").onclick = () => openMeasure(S.media);
+$("#photoShare").onclick = () => shareImage(S.media.data, "atelier-lowe-" + S.media.id + ".jpg");
+$("#photoDel").onclick = async () => { if(!confirmBox("Supprimer cette image ?")) return; await DB.del("media", S.media.id); toast("Image supprimée."); back(); };
+
+/* ================= Vidéo ================= */
+let vidUrl = null;
+function openVideo(m){
+  if(vidUrl) URL.revokeObjectURL(vidUrl);
+  vidUrl = URL.createObjectURL(m.blob);
+  const v = $("#player"); v.src = vidUrl; show("video");
+}
+$("#player").addEventListener("timeupdate", () => { const v = $("#player"); if(v.duration) $("#scrub").value = Math.round(v.currentTime / v.duration * 1000); });
+$("#scrub").addEventListener("input", e => { const v = $("#player"); if(v.duration){ v.pause(); v.currentTime = e.target.value / 1000 * v.duration; } });
+function seek(v, t){ return new Promise(res => { const done = () => { v.removeEventListener("seeked", done); res(); }; v.addEventListener("seeked", done); v.currentTime = t; setTimeout(done, 2500); }); }
+async function grab(v){
+  if(!v.videoWidth) throw new Error("vidéo non prête");
+  return toJpeg(v, v.videoWidth, v.videoHeight);
+}
+$("#grabFrame").onclick = async () => {
+  const v = $("#player"); v.pause();
+  try {
+    const data = await grab(v);
+    const m = {id:uid(), projectId:S.media.projectId, type:"frame", data, parentId:S.media.id, cree:Date.now()};
+    await DB.put("media", m); await touch(S.project); toast("Image ajoutée au projet.");
+    openMedia(m.id);
+  } catch { toast("Lancez la vidéo une seconde puis réessayez."); }
+};
+$("#autoFrames").onclick = async () => {
+  const v = $("#player"); v.pause();
+  if(!v.duration || !isFinite(v.duration)){ toast("Lancez la vidéo une seconde puis réessayez."); return; }
+  toast("Extraction de 4 vues…", 6000);
+  try {
+    for(const k of [.12, .37, .62, .87]){ await seek(v, v.duration * k); const data = await grab(v); await DB.put("media", {id:uid(), projectId:S.media.projectId, type:"frame", data, parentId:S.media.id, cree:Date.now()}); }
+    await touch(S.project); toast("4 vues ajoutées au projet."); S.hist.pop(); show("project", false); S.hist = ["projects"]; renderProject();
+  } catch { toast("L'extraction n'a pas abouti sur cette vidéo."); }
+};
+$("#delVideo").onclick = async () => { if(!confirmBox("Supprimer cette vidéo ? Les vues extraites sont gardées.")) return; await DB.del("media", S.media.id); $("#player").removeAttribute("src"); toast("Vidéo supprimée."); back(); };
+
+/* ================= Retouche ================= */
+const fill = (sel, arr) => $(sel).innerHTML = arr.map(([v, t]) => `<option value="${esc(v)}">${esc(t)}</option>`).join("");
+fill("#room", Object.entries(ROOMS));
+fill("#mType", Object.entries(MEUBLES).map(([k, v]) => [k, v[0]]));
+fill("#mFin", FINITIONS.map(f => [f, f]));
+function setMeubleDims(){ const d = MEUBLES[$("#mType").value]; $("#mW").value = d[1]; $("#mH").value = d[2]; $("#mD").value = d[3]; }
+$("#mType").onchange = setMeubleDims; setMeubleDims();
+function chipGroup(sel, items, multi, swatch){
+  const el = $(sel); el.innerHTML = items.map(it => { const [n, c] = Array.isArray(it) ? it : [it]; return `<button type="button" class="chip" data-v="${esc(n)}" aria-pressed="false">${swatch && c ? `<span class="sw" style="background:${c}"></span>` : ""}${esc(n)}</button>`; }).join("");
+  el.querySelectorAll(".chip").forEach(b => b.onclick = () => {
+    const on = b.getAttribute("aria-pressed") !== "true";
+    if(!multi) el.querySelectorAll(".chip").forEach(x => x.setAttribute("aria-pressed", "false"));
+    b.setAttribute("aria-pressed", on ? "true" : "false");
+  });
+}
+const picked = sel => $$(sel + " .chip[aria-pressed='true']").map(b => b.dataset.v);
+chipGroup("#oType", OUVERTURES, false); $("#oType .chip").setAttribute("aria-pressed", "true");
+chipGroup("#wallChips", MURS, false, true); chipGroup("#floorChips", SOLS, false, true);
+chipGroup("#decoChips", DECOS, true); chipGroup("#styleChips", STYLES, false); $("#styleChips .chip").setAttribute("aria-pressed", "true");
+$("#oType").addEventListener("click", () => { const t = picked("#oType")[0] || ""; const d = {"Porte":[90,215],"Fenêtre":[120,135],"Baie vitrée":[240,215],"Verrière d'atelier":[250,120],"Arche":[120,230],"Passe-plat":[120,60],"Porte coulissante à galandage":[93,215],"Ouverture de mur porteur":[300,230]}[t]; if(d){ $("#oW").value = d[0]; $("#oH").value = d[1]; } });
+
+function openEditor(src, parentId){
+  S.edit = {src, parentId}; S.strokes = [];
+  const im = $("#editImg"); im.onload = sizeBrush; im.src = src;
+  setTool(S.tool); show("edit");
+}
+const NEEDS_BRUSH = ["effacer", "remplacer", "ouverture"];
+function setTool(t){
+  S.tool = t;
+  $$(".tbtn").forEach(b => b.setAttribute("aria-pressed", b.dataset.tool === t ? "true" : "false"));
+  $$("[data-panel]").forEach(p => p.hidden = p.dataset.panel !== t);
+  const br = NEEDS_BRUSH.includes(t); $("#brush").hidden = !br; $("#brushBar").hidden = !br; drawStrokes();
+}
+$$(".tbtn").forEach(b => b.onclick = () => setTool(b.dataset.tool));
+const bc = $("#brush"); let cur = null;
+function sizeBrush(){ const im = $("#editImg"); bc.width = im.naturalWidth; bc.height = im.naturalHeight; drawStrokes(); }
+function drawStrokes(ctx = bc.getContext("2d"), clear = true){
+  if(clear) ctx.clearRect(0, 0, bc.width, bc.height);
+  ctx.lineCap = ctx.lineJoin = "round"; ctx.strokeStyle = "rgba(255,40,40,.6)";
+  for(const s of S.strokes){ ctx.lineWidth = s.w; ctx.beginPath(); s.p.forEach(([x, y], i) => i ? ctx.lineTo(x, y) : ctx.moveTo(x, y)); if(s.p.length === 1) ctx.lineTo(s.p[0][0] + .1, s.p[0][1]); ctx.stroke(); }
+}
+const bpos = e => { const r = bc.getBoundingClientRect(); return [(e.clientX - r.left) / r.width * bc.width, (e.clientY - r.top) / r.height * bc.height]; };
+bc.addEventListener("pointerdown", e => { e.preventDefault(); bc.setPointerCapture(e.pointerId); const r = bc.getBoundingClientRect(); cur = {w:+$("#bSize").value * bc.width / r.width, p:[bpos(e)]}; S.strokes.push(cur); drawStrokes(); });
+bc.addEventListener("pointermove", e => { if(!cur) return; cur.p.push(bpos(e)); drawStrokes(); });
+["pointerup", "pointercancel"].forEach(t => bc.addEventListener(t, () => cur = null));
+$("#bUndo").onclick = () => { S.strokes.pop(); drawStrokes(); };
+$("#bClear").onclick = () => { S.strokes = []; drawStrokes(); };
+function markedImage(){
+  const im = $("#editImg"), c = document.createElement("canvas"); c.width = im.naturalWidth; c.height = im.naturalHeight;
+  const g = c.getContext("2d"); g.drawImage(im, 0, 0); drawStrokes(g, false); return c.toDataURL("image/jpeg", .88);
+}
+function buildReq(){
+  const t = S.tool, extra = $("#extra").value.trim();
+  const r = {mode:t, piece:ROOMS[$("#room").value], image:S.edit.src, souhait:"", source:"appli-atelier", email:EMAIL_ATELIER};
+  const add = s => r.souhait = [r.souhait, s].filter(Boolean).join(". ");
+  let resume = "";
+  if(t === "meuble"){
+    const k = $("#mType").value, nom = MEUBLES[k][0], fin = $("#mFin").value;
+    r.meuble = `${nom.toLowerCase()}, finition ${fin.toLowerCase()}, environ ${$("#mW").value} cm de large, ${$("#mH").value} cm de haut et ${$("#mD").value} cm de profondeur, fabrication artisanale haut de gamme`;
+    r.consigne = $("#mOu").value.trim(); r.item = {type:k, nom, finition:fin, w:+$("#mW").value, h:+$("#mH").value, p:+$("#mD").value};
+    resume = `${nom} ${fin.toLowerCase()} ${$("#mW").value}×${$("#mH").value} cm` + (r.consigne ? ", " + r.consigne : "");
+  }
+  if(t === "effacer"){ r.image = markedImage(); r.consigne = $("#eNote").value.trim(); resume = "Enlever la zone marquée" + (r.consigne ? " (" + r.consigne + ")" : ""); }
+  if(t === "remplacer"){ r.image = markedImage(); r.consigne = $("#rTxt").value.trim(); resume = "Remplacer par : " + r.consigne; }
+  if(t === "ouverture"){
+    const ty = picked("#oType")[0] || "Porte";
+    r.mode = "remplacer"; r.image = markedImage();
+    r.consigne = `Créer dans le mur, à l'endroit marqué en rouge, une ouverture de type ${ty.toLowerCase()} d'environ ${$("#oW").value} cm de large et ${$("#oH").value} cm de haut, cadre ${$("#oFin").value}. Découpe nette et réaliste dans le mur existant, tableaux et linteau propres, en respectant la perspective, l'épaisseur du mur et la lumière de la pièce. ${$("#oNote").value.trim()}`.trim();
+    resume = `${ty} ${$("#oW").value}×${$("#oH").value} cm, cadre ${$("#oFin").value}`;
+  }
+  if(t === "surfaces"){
+    const m = picked("#wallChips")[0] || "", s = picked("#floorChips")[0] || "";
+    r.murs = m; r.sol = s; add($("#sNote").value.trim());
+    resume = [m && "murs " + m.toLowerCase(), s && "sol " + s.toLowerCase(), $("#sNote").value.trim()].filter(Boolean).join(", ");
+  }
+  if(t === "deco"){
+    const d = picked("#decoChips");
+    r.mode = "libre";
+    add(`Ajouter de la décoration réaliste et soignée : ${d.join(", ").toLowerCase() || "objets de décoration"}. ${$("#dNote").value.trim()} Ne pas modifier les murs, le sol, les fenêtres ni les meubles existants`);
+    resume = "Décoration : " + (d.join(", ").toLowerCase() || "") + ($("#dNote").value.trim() ? ", " + $("#dNote").value.trim() : "");
+  }
+  if(t === "redesign"){ r.style = picked("#styleChips")[0] || "Japandi"; r.palette = ""; resume = "Style " + r.style; }
+  if(t === "libre"){ add($("#lTxt").value.trim()); resume = $("#lTxt").value.trim(); }
+  if(extra){ add(extra); resume += " · " + extra; }
+  add("Rendu photoréaliste, même cadrage et même perspective que la photo d'origine");
+  r.resume = resume;
+  return r;
+}
+function checkReq(){
+  const t = S.tool;
+  if(NEEDS_BRUSH.includes(t) && !S.strokes.length) return "Coloriez d'abord la zone sur la photo.";
+  if(t === "remplacer" && !$("#rTxt").value.trim()) return "Dites par quoi remplacer l'élément.";
+  if(t === "surfaces" && !picked("#wallChips").length && !picked("#floorChips").length && !$("#sNote").value.trim()) return "Choisissez une teinte de mur ou un sol.";
+  if(t === "deco" && !picked("#decoChips").length && !$("#dNote").value.trim()) return "Choisissez au moins un type de décoration.";
+  if(t === "libre" && $("#lTxt").value.trim().length < 8) return "Décrivez la modification en quelques mots.";
+  if(t === "meuble" && !(+$("#mW").value > 0 && +$("#mH").value > 0)) return "Indiquez la largeur et la hauteur du meuble.";
+  return "";
+}
+$("#generate").onclick = () => { const m = checkReq(); if(m) return toast(m); S.lastReq = buildReq(); run(S.lastReq); };
+
+const STEPS = ["Lecture de la pièce", "Analyse de la lumière et des volumes", "Fabrication de la nouvelle pièce", "Pose des matières et finitions", "Derniers détails"];
+async function run(req){
+  $("#loadImg").src = S.edit.src; show("loading");
+  let i = 0; $("#loadBar").style.width = "6%"; $("#loadStep").textContent = STEPS[0];
+  const tick = setInterval(() => { i = Math.min(i + 1, STEPS.length - 1); $("#loadStep").textContent = STEPS[i]; $("#loadBar").style.width = (12 + i * 20) + "%"; }, 6000);
+  try {
+    const ctl = new AbortController(); const to = setTimeout(() => ctl.abort(), 180000);
+    const body = Object.assign({}, req); delete body.resume;
+    const r = await fetch(WEBHOOK_IA, {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(body), signal:ctl.signal});
+    clearTimeout(to);
+    const d = await r.json().catch(() => ({}));
+    if(!r.ok || !d.image) throw new Error(d.message || ("HTTP " + r.status));
+    clearInterval(tick); $("#loadBar").style.width = "100%";
+    const img = d.image.startsWith("data:") || d.image.startsWith("http") ? d.image : "data:image/png;base64," + d.image;
+    const after = img.startsWith("http") ? img : await loadImg(img).then(im => toJpeg(im, im.naturalWidth, im.naturalHeight, .9));
+    const m = {id:uid(), projectId:S.project.id, type:"rendu", data:after, parentId:S.edit.parentId, avant:S.edit.src, consigne:req.resume, req:Object.assign({}, req, {image:undefined}), cree:Date.now()};
+    await DB.put("media", m); await touch(S.project);
+    S.result = m; showResult();
+  } catch(err){
+    clearInterval(tick); S.hist.pop(); show("edit", false);
+    toast(navigator.onLine ? "Le rendu n'a pas abouti. Réessayez dans un instant." : "Pas de réseau : le rendu demande une connexion.", 4000);
+    console.warn("rendu", err);
+  }
+}
+function showResult(){
+  const R = S.result;
+  $("#cBefore").src = R.avant; $("#cAfter").src = R.data; $("#rCons").textContent = R.consigne ? "Demande : " + R.consigne : "";
+  $("#cRange").value = 50; setCmp(50); show("result");
+}
+function setCmp(v){ $("#cAfterWrap").style.clipPath = `inset(0 0 0 ${v}%)`; $("#cHandle").style.left = v + "%"; }
+$("#cRange").oninput = e => setCmp(+e.target.value);
+(() => { const c = $("#cmp"); let on = false; const mv = e => { const r = c.getBoundingClientRect(); const v = Math.max(0, Math.min(100, (e.clientX - r.left) / r.width * 100)); setCmp(v); $("#cRange").value = v; };
+  c.addEventListener("pointerdown", e => { on = true; mv(e); }); c.addEventListener("pointermove", e => on && mv(e)); ["pointerup", "pointerleave", "pointercancel"].forEach(t => c.addEventListener(t, () => on = false)); })();
+$("#rContinue").onclick = () => openEditor(S.result.data, S.result.id);
+$("#rRetry").onclick = () => { if(S.lastReq) run(S.lastReq); };
+$("#rShare").onclick = () => shareImage(S.result.data, "atelier-lowe-rendu-" + S.result.id + ".jpg");
+$("#rDone").onclick = () => { S.hist = ["projects"]; show("project", false); renderProject(); };
+
+/* ================= Plan coté ================= */
+function blankPlan(){ return {id:uid(), projectId:S.project.id, nom:"Pièce " + new Date().toLocaleDateString("fr-FR"), mode:"rect", L:400, l:300, hauteur:250, murs:[{len:400, turn:90}, {len:300, turn:90}, {len:400, turn:90}, {len:300, turn:90}], ouvertures:[], notes:"", cree:Date.now(), modifie:Date.now()}; }
+$("#addPlan").onclick = () => newPlan();
+function newPlan(seed){ S.plan = Object.assign(blankPlan(), seed || {}); if(S.plan.mode === "rect") rectToWalls(); loadPlanUI(); show("plan"); }
+async function openPlan(id){ S.plan = await DB.get("plans", id); loadPlanUI(); show("plan"); }
+function rectToWalls(){ const p = S.plan; p.murs = [{len:+p.L || 0, turn:90}, {len:+p.l || 0, turn:90}, {len:+p.L || 0, turn:90}, {len:+p.l || 0, turn:90}]; }
+function loadPlanUI(){
+  S.wallSel = null; S.selMode = false; S.selWalls = new Set(); setTimeout(() => window.selRefresh && selRefresh(), 0);
+  const p = S.plan;
+  $("#plName").value = p.nom; $("#rL").value = p.L || ""; $("#rW").value = p.l || ""; $("#rH").value = p.hauteur || ""; $("#wH").value = p.hauteur || ""; $("#plNotes").value = p.notes || "";
+  setPMode(p.mode, false); renderWalls(); renderOpenings(); drawPlan();
+  const pp = $("#plPhoto"); pp.hidden = true; pp.open = false;
+  if(p.photoId) DB.get("media", p.photoId).then(m => { if(m && S.plan === p){ pp.querySelector("img").src = m.data; pp.hidden = false; } });
+}
+function setPMode(m, conv = true){
+  const p = S.plan;
+  if(conv && m === "murs" && p.mode === "rect") rectToWalls();
+  if(conv && m === "rect" && p.mode === "murs"){ p.L = p.murs[0]?.len || 400; p.l = p.murs[1]?.len || 300; rectToWalls(); p.ouvertures = p.ouvertures.filter(o => o.mur < 4); }
+  p.mode = m;
+  $$("[data-pmode]").forEach(b => b.setAttribute("aria-pressed", b.dataset.pmode === m ? "true" : "false"));
+  $("#rectBox").hidden = m !== "rect"; $("#wallsBox").hidden = m !== "murs";
+  if(conv){ $("#rL").value = p.L; $("#rW").value = p.l; renderWalls(); renderOpenings(); drawPlan(); }
+}
+$$("[data-pmode]").forEach(b => b.onclick = () => setPMode(b.dataset.pmode));
+["#rL", "#rW"].forEach(s => $(s).addEventListener("input", () => { S.plan.L = +$("#rL").value; S.plan.l = +$("#rW").value; rectToWalls(); drawPlan(); }));
+["#rH", "#wH"].forEach(s => $(s).addEventListener("input", e => { S.plan.hauteur = +e.target.value; $("#rH").value = $("#wH").value = e.target.value; drawPlan(); }));
+$("#plName").addEventListener("input", e => S.plan.nom = e.target.value);
+$("#plNotes").addEventListener("input", e => S.plan.notes = e.target.value);
+function turnOpts(t){ const o = [[90, "↱ à droite"], [-90, "↰ à gauche"], [45, "↗ 45° droite"], [-45, "↖ 45° gauche"], [135, "135° droite"], [-135, "135° gauche"]]; if(!o.some(x => x[0] === +t)) o.push([+t, `${t}° (calculé)`]); return o; }
+function renderWalls(){
+  const p = S.plan;
+  $("#wallRows").innerHTML = p.murs.map((w, i) => `<div class="wall"><span class="n">M${i + 1}</span>
+    <input class="i" type="number" inputmode="numeric" aria-label="Longueur mur ${i + 1} en cm" placeholder="cm" value="${w.len || ""}" data-wl="${i}">
+    <select class="i" aria-label="Virage après le mur ${i + 1}" data-wt="${i}">${turnOpts(w.turn).map(([v, t]) => `<option value="${v}" ${+w.turn === v ? "selected" : ""}>${t}</option>`).join("")}</select>
+    <button class="iconbtn" aria-label="Supprimer le mur ${i + 1}" data-wd="${i}"><svg><use href="#i-trash"/></svg></button></div>`).join("");
+  $$("[data-wl]").forEach(x => x.oninput = () => { p.murs[+x.dataset.wl].len = +x.value; drawPlan(); });
+  $$("[data-wt]").forEach(x => x.onchange = () => { p.murs[+x.dataset.wt].turn = +x.value; drawPlan(); });
+  $$("[data-wd]").forEach(x => x.onclick = () => { const i = +x.dataset.wd; if(p.murs.length <= 3) return toast("Une pièce a au moins 3 murs."); p.murs.splice(i, 1); p.ouvertures = p.ouvertures.filter(o => o.mur !== i).map(o => (o.mur > i ? Object.assign(o, {mur:o.mur - 1}) : o)); renderWalls(); renderOpenings(); drawPlan(); });
+}
+$("#addWall").onclick = () => { S.plan.murs.push({len:0, turn:90}); renderWalls(); drawPlan(); const l = $$("[data-wl]"); l[l.length - 1].focus(); };
+
+/* ---- Correction d'un mur en le touchant sur le dessin ---- */
+$("#planSvgWrap").addEventListener("click", e => {
+  const h = e.target.closest("[data-hit]"); if(!h) return;
+  if(S.plan.mode !== "murs") setPMode("murs");
+  if(S.selMode){ const i = +h.dataset.hit; S.selWalls.has(i) ? S.selWalls.delete(i) : S.selWalls.add(i); selRefresh(); return; }
+  wallSheet(+h.dataset.hit);
+});
+function wallSheet(i){
+  const p = S.plan, w = p.murs[i]; S.wallSel = i; drawPlan();
+  const done = () => { S.wallSel = null; closeSheet(); renderWalls(); renderOpenings(); drawPlan(); };
+  sheet(`<h3 style="margin:0 0 4px">Mur M${i + 1}</h3>
+  <p class="muted small" style="margin:0 0 10px">Le mur en orange sur le plan. Mesurez-le au mètre et corrigez.</p>
+  <div class="grid2">
+    <div><label class="f" for="wsL">Longueur (cm)</label><input class="i" id="wsL" type="number" inputmode="decimal" value="${w.len || ""}"></div>
+    <div><label class="f" for="wsT">Angle au coin suivant (°)</label><input class="i" id="wsT" type="number" inputmode="numeric" value="${w.turn}"></div>
+  </div>
+  <div class="row" style="gap:6px;flex-wrap:wrap;margin:8px 0">
+    <button class="chip" type="button" data-wt2="90">↱ 90° droite</button><button class="chip" type="button" data-wt2="-90">↰ 90° gauche</button>
+    <button class="chip" type="button" data-wt2="45">45° droite</button><button class="chip" type="button" data-wt2="-45">45° gauche</button><button class="chip" type="button" data-wt2="0">tout droit</button>
+  </div>
+  <div class="stack">
+    <button class="btn primary block" id="wsOk">Valider</button>
+    <div class="grid2"><button class="btn" id="wsSplit">Couper en deux</button><button class="btn" id="wsAdd">Ajouter un mur après</button></div>
+    <div class="grid2"><button class="btn" id="wsPrev">◀ Mur précédent</button><button class="btn" id="wsNext">Mur suivant ▶</button></div>
+    <button class="btn danger block" id="wsDel"><svg><use href="#i-trash"/></svg>Supprimer ce mur</button>
+  </div>`, el => {
+    el.querySelectorAll("[data-wt2]").forEach(b => b.onclick = () => { $("#wsT").value = b.dataset.wt2; });
+    const save = () => { const L = +String($("#wsL").value).replace(",", "."); if(L > 0) w.len = Math.round(L); const t = +$("#wsT").value; if(!isNaN(t)) w.turn = Math.max(-180, Math.min(180, Math.round(t))); };
+    $("#wsOk").onclick = () => { save(); done(); };
+    $("#wsPrev").onclick = () => { save(); wallSheet((i - 1 + p.murs.length) % p.murs.length); };
+    $("#wsNext").onclick = () => { save(); wallSheet((i + 1) % p.murs.length); };
+    $("#wsSplit").onclick = () => { save(); const a = Math.round(w.len / 2), b = w.len - a;
+      p.murs.splice(i, 1, {len:a, turn:0}, {len:b, turn:w.turn});
+      p.ouvertures.forEach(o => { if(o.mur > i) o.mur++; else if(o.mur === i && o.pos >= a){ o.mur = i + 1; o.pos -= a; } });
+      toast("Mur coupé en deux : corrigez chaque morceau."); wallSheet(i); };
+    $("#wsAdd").onclick = () => { save(); p.murs.splice(i + 1, 0, {len:100, turn:90});
+      p.ouvertures.forEach(o => { if(o.mur > i) o.mur++; }); wallSheet(i + 1); };
+    $("#wsDel").onclick = () => { if(p.murs.length <= 3) return toast("Une pièce a au moins 3 murs.");
+      p.murs.splice(i, 1); p.ouvertures = p.ouvertures.filter(o => o.mur !== i).map(o => (o.mur > i ? Object.assign(o, {mur:o.mur - 1}) : o)); done(); };
+  });
+}
+$("#sheet").addEventListener("click", e => { if(e.target.id === "sheet" && S.wallSel != null){ S.wallSel = null; drawPlan(); } });
+$("#squareWalls").onclick = () => {
+  const p = S.plan; let n = 0;
+  p.murs.forEach(w => { const t = +w.turn || 0, r90 = Math.round(t / 90) * 90, r45 = Math.round(t / 45) * 45;
+    const nt = Math.abs(t - r90) <= 12 ? r90 : Math.abs(t - r45) <= 8 ? r45 : t; if(nt !== t){ w.turn = nt; n++; } });
+  renderWalls(); drawPlan();
+  toast(n ? `${n} angle(s) remis d'équerre. Si la pièce ne se referme pas, corrigez la longueur fausse ou touchez « Fermer la pièce ».` : "Les angles sont déjà d'équerre.", 4500);
+};
+$("#closeWalls").onclick = () => {
+  const p = S.plan; if(p.murs.length < 3) return;
+  const pts = planPoints(p); const n = p.murs.length, a = pts[n], prev = pts[n - 1], z = pts[0];
+  const gap = Math.hypot(z[0] - a[0], z[1] - a[1]);
+  if(gap < 1) return toast("La pièce est déjà fermée.");
+  const dirLast = Math.atan2(a[1] - prev[1], a[0] - prev[0]), ang = Math.atan2(z[1] - a[1], z[0] - a[0]);
+  let turn = Math.round((ang - dirLast) * 180 / Math.PI); turn = ((turn + 540) % 360) - 180;
+  p.murs[n - 1].turn = turn; p.murs.push({len:Math.round(gap), turn:90});
+  renderWalls(); drawPlan(); toast("Dernier mur ajouté : " + Math.round(gap) + " cm. Vérifiez-le au mètre.");
+};
+function planPoints(p, raw){
+  let x = 0, y = 0, a = 0; const pts = [[0, 0]];
+  p.murs.forEach(w => { x += Math.cos(a) * (+w.len || 0); y += Math.sin(a) * (+w.len || 0); pts.push([x, y]); a += (+w.turn || 0) * Math.PI / 180; });
+  return pts;
+}
+function planArea(p){ const pts = planPoints(p); let s = 0; for(let i = 0; i < pts.length - 1; i++) s += pts[i][0] * pts[i + 1][1] - pts[i + 1][0] * pts[i][1]; return Math.abs(s / 2) / 1e4; }
+const fmtM2 = v => (Math.round(v * 100) / 100).toLocaleString("fr-FR");
+function planSvg(p, opt = {}){
+  const pts = planPoints(p); const n = p.murs.length;
+  const xs = pts.map(q => q[0]), ys = pts.map(q => q[1]);
+  const minX = Math.min(...xs), maxX = Math.max(...xs), minY = Math.min(...ys), maxY = Math.max(...ys);
+  const span = Math.max(maxX - minX, maxY - minY, 100); const pad = span * .26 + 40;
+  const W = maxX - minX + pad * 2, H = maxY - minY + pad * 2 + (opt.title ? span * .12 : 0);
+  const ox = -minX + pad, oy = -minY + pad + (opt.title ? span * .12 : 0);
+  const fs = Math.max(14, span * .052), sw = Math.max(5, span * .018);
+  // sens de la pièce (pour placer les cotes à l'extérieur)
+  let sgn = 0; for(let i = 0; i < pts.length - 1; i++) sgn += pts[i][0] * pts[i + 1][1] - pts[i + 1][0] * pts[i][1]; const cw = sgn > 0 ? -1 : 1;
+  const P = q => [(q[0] + ox).toFixed(1), (q[1] + oy).toFixed(1)];
+  const hits = [];
+  let g = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W.toFixed(0)} ${H.toFixed(0)}" font-family="Helvetica,Arial,sans-serif">`;
+  g += `<rect width="100%" height="100%" fill="#fff"/>`;
+  if(opt.title) g += `<text x="${pad * .5}" y="${span * .09}" font-size="${fs * 1.35}" font-weight="700" fill="#24454A">${esc(p.nom)}</text><text x="${pad * .5}" y="${span * .09 + fs * 1.5}" font-size="${fs * .8}" fill="#5E6F70">Atelier Löwe · ${fmtM2(planArea(p))} m² · hauteur ${p.hauteur || "?"} cm · cotes en cm</text>`;
+  // grille 50 cm
+  const gs = 50; g += `<g stroke="#EFE8DC" stroke-width="${sw * .12}">`;
+  for(let x = Math.floor(minX / gs) * gs; x <= maxX; x += gs) g += `<line x1="${x + ox}" y1="${minY + oy}" x2="${x + ox}" y2="${maxY + oy}"/>`;
+  for(let y = Math.floor(minY / gs) * gs; y <= maxY; y += gs) g += `<line x1="${minX + ox}" y1="${y + oy}" x2="${maxX + ox}" y2="${y + oy}"/>`;
+  g += `</g>`;
+  g += `<polygon points="${pts.slice(0, -1).map(q => P(q).join(",")).join(" ")}" fill="#F5F1E8" stroke="none"/>`;
+  for(let i = 0; i < n; i++){
+    const a = pts[i], b = pts[i + 1], L = +p.murs[i].len || 0; if(!L) continue;
+    const ux = (b[0] - a[0]) / L, uy = (b[1] - a[1]) / L, nx = -uy * cw, ny = ux * cw;
+    // segments pleins entre ouvertures
+    const ops = p.ouvertures.filter(o => o.mur === i).map(o => [Math.max(0, +o.pos || 0), Math.min(L, (+o.pos || 0) + (+o.w || 0)), o]).sort((u, v) => u[0] - v[0]);
+    let s = 0; const segs = []; ops.forEach(([s0, s1]) => { if(s0 > s) segs.push([s, s0]); s = Math.max(s, s1); }); if(s < L) segs.push([s, L]);
+    segs.forEach(([s0, s1]) => { const A = P([a[0] + ux * s0, a[1] + uy * s0]), B = P([a[0] + ux * s1, a[1] + uy * s1]); g += `<line x1="${A[0]}" y1="${A[1]}" x2="${B[0]}" y2="${B[1]}" stroke="#24454A" stroke-width="${sw}" stroke-linecap="square"/>`; });
+    ops.forEach(([s0, s1, o], k) => {
+      const A = [a[0] + ux * s0, a[1] + uy * s0], B = [a[0] + ux * s1, a[1] + uy * s1];
+      const pA = P(A), pB = P(B);
+      if(o.type === "Fenêtre" || o.type === "Baie vitrée"){
+        g += `<line x1="${pA[0]}" y1="${pA[1]}" x2="${pB[0]}" y2="${pB[1]}" stroke="#7FA7B0" stroke-width="${sw * .55}"/>`;
+        g += `<line x1="${(+pA[0] + nx * sw * .5).toFixed(1)}" y1="${(+pA[1] + ny * sw * .5).toFixed(1)}" x2="${(+pB[0] + nx * sw * .5).toFixed(1)}" y2="${(+pB[1] + ny * sw * .5).toFixed(1)}" stroke="#24454A" stroke-width="${sw * .18}"/>`;
+        g += `<line x1="${(+pA[0] - nx * sw * .5).toFixed(1)}" y1="${(+pA[1] - ny * sw * .5).toFixed(1)}" x2="${(+pB[0] - nx * sw * .5).toFixed(1)}" y2="${(+pB[1] - ny * sw * .5).toFixed(1)}" stroke="#24454A" stroke-width="${sw * .18}"/>`;
+      } else if(o.type === "Porte"){
+        const w = s1 - s0, hx = A[0] - nx * w, hy = A[1] - ny * w, pH = P([hx, hy]);
+        g += `<line x1="${pA[0]}" y1="${pA[1]}" x2="${pH[0]}" y2="${pH[1]}" stroke="#965A2E" stroke-width="${sw * .25}"/>`;
+        g += `<path d="M ${pH[0]} ${pH[1]} A ${w} ${w} 0 0 ${cw > 0 ? 0 : 1} ${pB[0]} ${pB[1]}" fill="none" stroke="#965A2E" stroke-width="${sw * .15}" stroke-dasharray="${sw * .6} ${sw * .4}"/>`;
+      } else {
+        g += `<line x1="${pA[0]}" y1="${pA[1]}" x2="${pB[0]}" y2="${pB[1]}" stroke="#965A2E" stroke-width="${sw * .2}" stroke-dasharray="${sw * .8} ${sw * .5}"/>`;
+      }
+      const dk = fs * (1.5 + k * 1.15), mx = (A[0] + B[0]) / 2 - nx * dk, my = (A[1] + B[1]) / 2 - ny * dk, M = P([mx, my]);
+      const lab = `${({"Porte":"P","Fenêtre":"F","Baie vitrée":"BV"})[o.type] || "O"} ${Math.round(s1 - s0)}×${o.h || "?"}` + (o.allege ? ` all.${o.allege}` : "");
+      g += `<text x="${M[0]}" y="${M[1]}" font-size="${fs * .72}" fill="#965A2E" text-anchor="middle" dominant-baseline="middle" font-weight="600">${esc(lab)}</text>`;
+    });
+    // cote du mur à l'extérieur
+    const off = sw + fs * 1.1, A2 = P([a[0] + nx * off, a[1] + ny * off]), B2 = P([b[0] + nx * off, b[1] + ny * off]);
+    g += `<line x1="${A2[0]}" y1="${A2[1]}" x2="${B2[0]}" y2="${B2[1]}" stroke="#5E6F70" stroke-width="${sw * .12}"/>`;
+    [A2, B2].forEach(Q => g += `<line x1="${(+Q[0] - nx * fs * .4).toFixed(1)}" y1="${(+Q[1] - ny * fs * .4).toFixed(1)}" x2="${(+Q[0] + nx * fs * .4).toFixed(1)}" y2="${(+Q[1] + ny * fs * .4).toFixed(1)}" stroke="#5E6F70" stroke-width="${sw * .12}"/>`);
+    const tx = (a[0] + b[0]) / 2 + nx * (off + fs * .9), ty = (a[1] + b[1]) / 2 + ny * (off + fs * .9), T = P([tx, ty]);
+    let rot = Math.atan2(uy, ux) * 180 / Math.PI; if(rot > 90) rot -= 180; if(rot < -90) rot += 180;
+    g += `<text x="${T[0]}" y="${T[1]}" font-size="${fs}" fill="#24454A" text-anchor="middle" dominant-baseline="middle" font-weight="700" transform="rotate(${rot.toFixed(1)} ${T[0]} ${T[1]})">${Math.round(L)}</text>`;
+    if(opt.edit){
+      if(opt.sel === i || (opt.selSet && opt.selSet.has(i))) g += `<line x1="${P(a)[0]}" y1="${P(a)[1]}" x2="${P(b)[0]}" y2="${P(b)[1]}" stroke="#C8763A" stroke-width="${sw * 1.6}" stroke-linecap="round" opacity=".75"/>`;
+      hits.push([L, `<line data-hit="${i}" x1="${P(a)[0]}" y1="${P(a)[1]}" x2="${P(b)[0]}" y2="${P(b)[1]}" stroke="rgba(0,0,0,0)" stroke-width="${Math.max(sw * 5, fs * 2.2)}" style="cursor:pointer"/>`]);
+    }
+    // numéro du mur à l'intérieur
+    const ix = (a[0] + b[0]) / 2 - nx * (sw + fs * .9), iy = (a[1] + b[1]) / 2 - ny * (sw + fs * .9), I = P([ix, iy]);
+    if(!ops.length) g += `<text x="${I[0]}" y="${I[1]}" font-size="${fs * .65}" fill="#9AA5A5" text-anchor="middle" dominant-baseline="middle">M${i + 1}</text>`;
+  }
+  const C = P([(minX + maxX) / 2, (minY + maxY) / 2]);
+  g += `<text x="${C[0]}" y="${C[1]}" font-size="${fs * 1.1}" fill="#24454A" text-anchor="middle" font-weight="700">${fmtM2(planArea(p))} m²</text>`;
+  g += `<text x="${C[0]}" y="${(+C[1] + fs * 1.3).toFixed(1)}" font-size="${fs * .75}" fill="#5E6F70" text-anchor="middle">H ${p.hauteur || "?"} cm</text>`;
+  // zones tactiles par-dessus tout, les murs courts en dernier pour rester touchables
+  g += hits.sort((u, v) => v[0] - u[0]).map(h => h[1]).join("");
+  g += `</svg>`;
+  return g;
+}
+function planThumb(p){ try { return planSvg(p).replace("<svg ", '<svg style="width:100%;height:100%" '); } catch { return ""; } }
+function drawPlan(){
+  const p = S.plan; $("#planSvgWrap").innerHTML = planSvg(p, {edit:true, sel:S.wallSel, selSet:S.selMode ? S.selWalls : null});
+  const pts = planPoints(p), per = p.murs.reduce((s, w) => s + (+w.len || 0), 0) / 100;
+  const openArea = p.ouvertures.reduce((s, o) => s + (+o.w || 0) * (+o.h || 0), 0) / 1e4;
+  $("#stArea").textContent = fmtM2(planArea(p)); $("#stPer").textContent = fmtM2(per);
+  $("#stWall").textContent = p.hauteur ? fmtM2(per * p.hauteur / 100 - openArea) : "—";
+  const z = pts[pts.length - 1], gap = Math.hypot(z[0], z[1]);
+  $("#closeWarn").hidden = gap < 2; $("#closeWarn").textContent = `La pièce ne se referme pas : il manque ${Math.round(gap)} cm. Vérifiez une longueur ou un angle, ou touchez « Fermer la pièce ».`;
+}
+function renderOpenings(){
+  const p = S.plan;
+  $("#openList").innerHTML = p.ouvertures.length ? p.ouvertures.map((o, i) => `<div class="oitem"><span><b>${esc(o.type)}</b> · M${o.mur + 1} à ${o.pos} cm · ${o.w}×${o.h} cm${o.allege ? " · allège " + o.allege : ""}</span><span class="row" style="gap:2px"><button class="iconbtn" data-oe="${i}" aria-label="Modifier">✎</button><button class="iconbtn" data-od="${i}" aria-label="Supprimer"><svg><use href="#i-trash"/></svg></button></span></div>`).join("") : `<p class="muted small" style="margin:0">Aucune ouverture.</p>`;
+  $$("[data-od]").forEach(b => b.onclick = () => { p.ouvertures.splice(+b.dataset.od, 1); renderOpenings(); drawPlan(); });
+  $$("[data-oe]").forEach(b => b.onclick = () => openingForm(+b.dataset.oe));
+}
+function openingForm(idx){
+  const p = S.plan, o = idx >= 0 ? p.ouvertures[idx] : {type:"Porte", mur:0, pos:20, w:83, h:204, allege:0};
+  sheet(`<h2 id="sheetTitle">${idx >= 0 ? "Modifier" : "Ajouter"} une ouverture</h2><form id="of" class="stack" style="margin-top:14px">
+    <div class="grid2"><div><label class="f" for="ofT">Type</label><select class="i" id="ofT">${["Porte", "Fenêtre", "Baie vitrée", "Passage", "Placard", "Niche"].map(t => `<option ${t === o.type ? "selected" : ""}>${t}</option>`).join("")}</select></div>
+    <div><label class="f" for="ofM">Mur</label><select class="i" id="ofM">${p.murs.map((w, i) => `<option value="${i}" ${i === o.mur ? "selected" : ""}>M${i + 1} (${w.len || 0} cm)</option>`).join("")}</select></div></div>
+    <div><label class="f" for="ofP">Distance depuis le début du mur (cm)</label><input class="i" id="ofP" type="number" inputmode="numeric" value="${o.pos}"></div>
+    <div class="grid3"><div><label class="f" for="ofW">Largeur</label><input class="i" id="ofW" type="number" inputmode="numeric" value="${o.w}"></div><div><label class="f" for="ofH">Hauteur</label><input class="i" id="ofH" type="number" inputmode="numeric" value="${o.h}"></div><div><label class="f" for="ofA">Allège</label><input class="i" id="ofA" type="number" inputmode="numeric" value="${o.allege || 0}"></div></div>
+    <button class="btn primary block" type="submit">Valider</button></form>`, b => {
+    b.querySelector("#ofT").onchange = e => { const d = {"Porte":[83, 204, 0], "Fenêtre":[120, 135, 95], "Baie vitrée":[240, 215, 0], "Passage":[90, 210, 0], "Placard":[120, 250, 0], "Niche":[60, 80, 90]}[e.target.value]; if(d){ $("#ofW").value = d[0]; $("#ofH").value = d[1]; $("#ofA").value = d[2]; } };
+    b.querySelector("#of").onsubmit = e => {
+      e.preventDefault();
+      const n = {type:$("#ofT").value, mur:+$("#ofM").value, pos:+$("#ofP").value || 0, w:+$("#ofW").value || 0, h:+$("#ofH").value || 0, allege:+$("#ofA").value || 0};
+      const L = +p.murs[n.mur].len || 0;
+      if(n.pos + n.w > L) return toast(`Trop large : le mur M${n.mur + 1} fait ${L} cm.`);
+      if(idx >= 0) p.ouvertures[idx] = n; else p.ouvertures.push(n);
+      closeSheet(); renderOpenings(); drawPlan();
+    };
+  });
+}
+$("#addOpen").onclick = () => openingForm(-1);
+$("#plSave").onclick = async () => { const p = S.plan; p.nom = $("#plName").value.trim() || "Pièce"; p.modifie = Date.now(); await DB.put("plans", p); await touch(S.project); toast("Plan enregistré."); };
+async function planPng(pl = S.plan, type = "image/png"){
+  const svg = planSvg(pl, {title:true}); const vb = svg.match(/viewBox="0 0 (\d+) (\d+)"/);
+  const w = 2000, h = Math.round(w * vb[2] / vb[1]);
+  const im = await loadImg("data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg));
+  const c = document.createElement("canvas"); c.width = w; c.height = h; const g = c.getContext("2d"); g.fillStyle = "#fff"; g.fillRect(0, 0, w, h); g.drawImage(im, 0, 0, w, h);
+  return c.toDataURL(type, .92);
+}
+$("#plPng").onclick = async () => { $("#plSave").click(); try { shareImage(await planPng(), (S.plan.nom || "plan").replace(/[^\wÀ-ÿ-]+/g, "-") + ".png"); } catch { toast("L'image du plan n'a pas pu être créée."); } };
+$("#plPrint").onclick = () => {
+  $("#plSave").click();
+  const p = S.plan; printHtml(`<h1>${esc(S.project ? S.project.nom : "")}</h1>${planReport(p)}`, p.nom || "plan");
+};
+$("#plDel").onclick = async () => { if(!confirmBox("Supprimer ce plan ?")) return; await DB.del("plans", S.plan.id); toast("Plan supprimé."); back(); };
+
+
+/* ================= Export SketchUp (3D .dae / .stl, 2D .dxf) ================= */
+const EP = 10;
+let SKU_ONLY = null; // murs à exporter (null = toute la pièce) // épaisseur des murs dans l'export (cm), posée à l'extérieur des cotes intérieures
+function planGeo(p){
+  const pts = planPoints(p), n = p.murs.length;
+  let sg = 0; for(let i = 0; i < n; i++) sg += pts[i][0] * pts[i + 1][1] - pts[i + 1][0] * pts[i][1];
+  const out = sg > 0 ? -1 : 1; // sens de la normale extérieure
+  const W = [];
+  for(let i = 0; i < n; i++){
+    const a = pts[i], b = pts[i + 1], L = Math.hypot(b[0] - a[0], b[1] - a[1]) || 1;
+    const u = [(b[0] - a[0]) / L, (b[1] - a[1]) / L], nr = [-u[1] * out, u[0] * out];
+    W.push({a, b, L, u, n:nr});
+  }
+  // coins extérieurs en onglet : croisement des lignes décalées de EP
+  const off = w => [[w.a[0] + w.n[0] * EP, w.a[1] + w.n[1] * EP], w.u];
+  const cross = (i, j) => { const [P, d] = off(W[i]), [Q, e] = off(W[j]); const den = d[0] * e[1] - d[1] * e[0];
+    if(Math.abs(den) < 1e-6) return [W[i].b[0] + W[i].n[0] * EP, W[i].b[1] + W[i].n[1] * EP];
+    const t = ((Q[0] - P[0]) * e[1] - (Q[1] - P[1]) * e[0]) / den; return [P[0] + d[0] * t, P[1] + d[1] * t]; };
+  W.forEach((w, i) => { w.B = cross(i, (i + 1) % n); w.A = cross((i - 1 + n) % n, i); });
+  return {W, pts:pts.slice(0, n), H:+p.hauteur || 250};
+}
+function planTris(p){
+  const {W, pts, H} = planGeo(p), T = [];
+  const V = (x, y, z) => [x, -y, z]; // SketchUp : axe Y vers le haut du plan, Z vertical
+  const tri = (a, b, c, nrm) => { const u = [b[0] - a[0], b[1] - a[1], b[2] - a[2]], v = [c[0] - a[0], c[1] - a[1], c[2] - a[2]];
+    const cr = [u[1] * v[2] - u[2] * v[1], u[2] * v[0] - u[0] * v[2], u[0] * v[1] - u[1] * v[0]];
+    T.push(cr[0] * nrm[0] + cr[1] * nrm[1] + cr[2] * nrm[2] >= 0 ? [a, b, c] : [a, c, b]); };
+  const quad = (a, b, c, d, nrm) => { tri(a, b, c, nrm); tri(a, c, d, nrm); };
+  W.forEach((w, i) => {
+    if(SKU_ONLY && !SKU_ONLY.has(i)) return;
+    const N3 = [w.n[0], -w.n[1], 0], U3 = [w.u[0], -w.u[1], 0], neg = v => v.map(x => -x);
+    const inn = s => [w.a[0] + w.u[0] * s, w.a[1] + w.u[1] * s];
+    const ext = s => s <= 0.01 ? w.A : s >= w.L - 0.01 ? w.B : [w.a[0] + w.u[0] * s + w.n[0] * EP, w.a[1] + w.u[1] * s + w.n[1] * EP];
+    const piece = (s0, s1, z0, z1) => { if(s1 - s0 < .5 || z1 - z0 < .5) return;
+      const i0 = inn(s0), i1 = inn(s1), e0 = ext(s0), e1 = ext(s1);
+      quad(V(...i0, z0), V(...i1, z0), V(...i1, z1), V(...i0, z1), neg(N3));
+      quad(V(...e0, z0), V(...e1, z0), V(...e1, z1), V(...e0, z1), N3);
+      quad(V(...i0, z1), V(...i1, z1), V(...e1, z1), V(...e0, z1), [0, 0, 1]);
+      quad(V(...i0, z0), V(...i1, z0), V(...e1, z0), V(...e0, z0), [0, 0, -1]); };
+    const ops = p.ouvertures.filter(o => o.mur === i).map(o => { const s0 = Math.max(0, +o.pos || 0), s1 = Math.min(w.L, s0 + (+o.w || 0));
+      const a = o.type === "Porte" || o.type === "Passage" ? 0 : Math.max(0, +o.allege || 0); return {s0, s1, a, h:Math.min(H - a, +o.h || 0)}; }).filter(o => o.s1 > o.s0).sort((x, y) => x.s0 - y.s0);
+    let s = 0;
+    ops.forEach(o => {
+      piece(s, Math.max(s, o.s0), 0, H);
+      piece(o.s0, o.s1, 0, o.a); piece(o.s0, o.s1, o.a + o.h, H);
+      [[o.s0, U3], [o.s1, neg(U3)]].forEach(([sj, nj]) => { const I = inn(sj), E = [I[0] + w.n[0] * EP, I[1] + w.n[1] * EP];
+        quad(V(...I, o.a), V(...E, o.a), V(...E, o.a + o.h), V(...I, o.a + o.h), nj); });
+      s = Math.max(s, o.s1);
+    });
+    piece(s, w.L, 0, H);
+  });
+  if(SKU_ONLY) return T; // export partiel : pas de sol
+  // sol (découpe en triangles « par oreilles »)
+  const P = pts.slice(); let sg = 0; P.forEach((q, i) => { const r = P[(i + 1) % P.length]; sg += q[0] * r[1] - r[0] * q[1]; });
+  const idx = P.map((_, i) => i); let guard = 0;
+  const inside = (q, a, b, c) => { const d = (u, v, w2) => (u[0] - w2[0]) * (v[1] - w2[1]) - (v[0] - w2[0]) * (u[1] - w2[1]);
+    const d1 = d(q, a, b), d2 = d(q, b, c), d3 = d(q, c, a); return !((d1 < 0 || d2 < 0 || d3 < 0) && (d1 > 0 || d2 > 0 || d3 > 0)); };
+  while(idx.length > 3 && guard++ < 500){
+    let cut = false;
+    for(let k = 0; k < idx.length; k++){
+      const a = P[idx[(k - 1 + idx.length) % idx.length]], b = P[idx[k]], c = P[idx[(k + 1) % idx.length]];
+      const cr = (b[0] - a[0]) * (c[1] - a[1]) - (b[1] - a[1]) * (c[0] - a[0]);
+      if(cr * sg <= 0) continue;
+      if(idx.some(j => { const q = P[j]; return q !== a && q !== b && q !== c && inside(q, a, b, c); })) continue;
+      tri(V(...a, 0), V(...b, 0), V(...c, 0), [0, 0, 1]); idx.splice(k, 1); cut = true; break;
+    }
+    if(!cut) break;
+  }
+  if(idx.length === 3) tri(V(...P[idx[0]], 0), V(...P[idx[1]], 0), V(...P[idx[2]], 0), [0, 0, 1]);
+  return T;
+}
+function planDae(p){
+  const T = planTris(p), f = x => (Math.round(x * 100) / 100).toString();
+  const pos = T.flatMap(t => t.flatMap(v => v.map(f))).join(" ");
+  const nom = (p.nom || "Piece").replace(/[<&>"]/g, "");
+  return `<?xml version="1.0" encoding="utf-8"?>
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1">
+<asset><contributor><authoring_tool>Atelier Lowe</authoring_tool></contributor><unit name="centimeter" meter="0.01"/><up_axis>Z_UP</up_axis></asset>
+<library_effects><effect id="mur-fx"><profile_COMMON><technique sid="c"><lambert><diffuse><color>0.96 0.94 0.90 1</color></diffuse></lambert></technique></profile_COMMON></effect></library_effects>
+<library_materials><material id="mur" name="Murs"><instance_effect url="#mur-fx"/></material></library_materials>
+<library_geometries><geometry id="piece" name="${nom}"><mesh>
+<source id="piece-pos"><float_array id="piece-pos-a" count="${T.length * 9}">${pos}</float_array><technique_common><accessor source="#piece-pos-a" count="${T.length * 3}" stride="3"><param name="X" type="float"/><param name="Y" type="float"/><param name="Z" type="float"/></accessor></technique_common></source>
+<vertices id="piece-v"><input semantic="POSITION" source="#piece-pos"/></vertices>
+<triangles count="${T.length}" material="mur"><input semantic="VERTEX" source="#piece-v" offset="0"/><p>${T.map((_, i) => `${i * 3} ${i * 3 + 1} ${i * 3 + 2}`).join(" ")}</p></triangles>
+</mesh></geometry></library_geometries>
+<library_visual_scenes><visual_scene id="scene"><node id="n" name="${nom}"><instance_geometry url="#piece"><bind_material><technique_common><instance_material symbol="mur" target="#mur"/></technique_common></bind_material></instance_geometry></node></visual_scene></library_visual_scenes>
+<scene><instance_visual_scene url="#scene"/></scene>
+</COLLADA>`;
+}
+function planStl(p){
+  // STL en millimètres (unité la plus courante à l'import)
+  const T = planTris(p), f = x => (x * 10).toFixed(1);
+  return "solid piece\n" + T.map(t => { const [a, b, c] = t, u = [b[0] - a[0], b[1] - a[1], b[2] - a[2]], v = [c[0] - a[0], c[1] - a[1], c[2] - a[2]];
+    let nn = [u[1] * v[2] - u[2] * v[1], u[2] * v[0] - u[0] * v[2], u[0] * v[1] - u[1] * v[0]]; const l = Math.hypot(...nn) || 1; nn = nn.map(x => (x / l).toFixed(4));
+    return ` facet normal ${nn.join(" ")}\n  outer loop\n${t.map(q => `   vertex ${q.map(f).join(" ")}`).join("\n")}\n  endloop\n endfacet`; }).join("\n") + "\nendsolid piece\n";
+}
+function planDxf(p){
+  const {W, H} = planGeo(p), L = [];
+  const g = (c, v) => L.push(c, v);
+  const line = (a, b, layer) => { g(0, "LINE"); g(8, layer); g(10, a[0].toFixed(2)); g(20, (-a[1]).toFixed(2)); g(30, 0); g(11, b[0].toFixed(2)); g(21, (-b[1]).toFixed(2)); g(31, 0); };
+  const text = (q, h, t, rot, layer) => { g(0, "TEXT"); g(8, layer); g(10, q[0].toFixed(2)); g(20, (-q[1]).toFixed(2)); g(30, 0); g(40, h); g(1, t); g(50, rot.toFixed(1)); g(72, 1); g(11, q[0].toFixed(2)); g(21, (-q[1]).toFixed(2)); g(31, 0); };
+  const arc = (c, r, a0, a1, layer) => { g(0, "ARC"); g(8, layer); g(10, c[0].toFixed(2)); g(20, (-c[1]).toFixed(2)); g(30, 0); g(40, r.toFixed(2)); g(50, a0.toFixed(1)); g(51, a1.toFixed(1)); };
+  g(0, "SECTION"); g(2, "HEADER"); g(9, "$INSUNITS"); g(70, 5); g(0, "ENDSEC"); g(0, "SECTION"); g(2, "ENTITIES");
+  W.forEach((w, i) => {
+    if(SKU_ONLY && !SKU_ONLY.has(i)) return;
+    const at = (s, d = 0) => [w.a[0] + w.u[0] * s + w.n[0] * d, w.a[1] + w.u[1] * s + w.n[1] * d];
+    const ops = p.ouvertures.filter(o => o.mur === i).map(o => [Math.max(0, +o.pos || 0), Math.min(w.L, (+o.pos || 0) + (+o.w || 0)), o]).sort((x, y) => x[0] - y[0]);
+    let s = 0; const segs = []; ops.forEach(([s0, s1]) => { if(s0 > s) segs.push([s, s0]); s = Math.max(s, s1); }); if(s < w.L) segs.push([s, w.L]);
+    segs.forEach(([s0, s1]) => { line(at(s0), at(s1), "MURS"); line(s0 <= .01 ? w.A : at(s0, EP), s1 >= w.L - .01 ? w.B : at(s1, EP), "MURS"); });
+    ops.forEach(([s0, s1, o]) => {
+      line(at(s0), at(s0, EP), "MURS"); line(at(s1), at(s1, EP), "MURS");
+      if(o.type === "Porte"){ const hinge = at(s0), leaf = at(s0, -(s1 - s0)); line(hinge, leaf, "OUVERTURES");
+        const ang = q => Math.atan2(-(q[1] - hinge[1]), q[0] - hinge[0]) * 180 / Math.PI; let a0 = ang(leaf), a1 = ang(at(s1));
+        if(((a1 - a0 + 360) % 360) > 180){ const t = a0; a0 = a1; a1 = t; } arc(hinge, s1 - s0, a0, a1, "OUVERTURES"); }
+      else { line(at(s0, EP / 2), at(s1, EP / 2), "OUVERTURES"); line(at(s0), at(s1), "OUVERTURES"); line(at(s0, EP), at(s1, EP), "OUVERTURES"); }
+      const lab = `${o.type} ${Math.round(s1 - s0)}x${o.h || "?"}` + (o.allege ? ` all.${o.allege}` : "");
+      text(at((s0 + s1) / 2, -18), 7, lab, -Math.atan2(w.u[1], w.u[0]) * 180 / Math.PI, "TEXTES");
+    });
+    let rot = -Math.atan2(w.u[1], w.u[0]) * 180 / Math.PI; if(rot > 90) rot -= 180; if(rot < -90) rot += 180;
+    text(at(w.L / 2, EP + 22), 12, String(Math.round(w.L)), rot, "COTES");
+  });
+  g(0, "ENDSEC"); g(0, "EOF");
+  return L.join("\n") + "\n";
+}
+async function sendFile(text, name, mime){
+  await shareImage(new Blob([text], {type:mime}), name);
+}
+$("#plSku").onclick = () => skuSheet(null);
+function skuSheet(only){
+  $("#plSave").click();
+  const base = (S.plan.nom || "piece").normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^\w-]+/g, "-");
+  sheet(`<h3 style="margin:0 0 6px">Exporter pour SketchUp${only ? ` · ${only.size} mur(s)` : ""}</h3>
+  <p class="muted small" style="margin:0 0 12px">Murs à la hauteur, portes et fenêtres découpées, épaisseur de mur ${EP} cm posée à l'extérieur des cotes. Dans SketchUp : Fichier › Importer, puis choisissez le fichier.</p>
+  <div class="stack">
+    <button class="btn primary block" data-sku="dae">Pièce 3D · .dae (SketchUp Pro, iPad)</button>
+    <button class="btn block" data-sku="stl">Pièce 3D · .stl (SketchUp gratuit, en mm)</button>
+    <button class="btn block" data-sku="dxf">Plan 2D coté · .dxf (unité : centimètres)</button>
+  </div>`, el => el.querySelectorAll("[data-sku]").forEach(b => b.onclick = async () => {
+    const k = b.dataset.sku, p = S.plan; SKU_ONLY = only && only.size ? only : null;
+    const base2 = SKU_ONLY ? base + "-murs-" + [...SKU_ONLY].sort((x, y) => x - y).map(i => "M" + (i + 1)).join("") : base;
+    try {
+      if(k === "dae") await sendFile(planDae(p), base2 + ".dae", "model/vnd.collada+xml");
+      if(k === "stl") await sendFile(planStl(p), base2 + ".stl", "model/stl");
+      if(k === "dxf") await sendFile(planDxf(p), base2 + ".dxf", "image/vnd.dxf");
+      closeSheet();
+    } catch(e){ console.warn(e); toast("Le fichier n'a pas pu être créé."); }
+    SKU_ONLY = null;
+  }));
+}
+
+/* ================= Sélection de murs ================= */
+function selRefresh(){
+  const n = S.selWalls ? S.selWalls.size : 0;
+  $("#selToggle").setAttribute("aria-pressed", S.selMode ? "true" : "false");
+  $("#selToggle").textContent = S.selMode ? "Terminer la sélection" : "Sélectionner des murs";
+  $("#selBar").hidden = !S.selMode;
+  $("#selInfo").hidden = !S.selMode;
+  if(n){ const l = selList(); let g = 0, net = 0; l.forEach(i => { const w = wallStats(S.plan, i); g += w.gross; net += w.net; });
+    $("#selInfo").innerHTML = `<b>${l.map(i => "M" + (i + 1)).join(", ")}</b> : ${fmtM2(net)} m² de mur hors ouvertures (${fmtM2(g)} m² brut) · sol ${fmtM2(planArea(S.plan))} m²`;
+  } else $("#selInfo").textContent = `Touchez les murs voulus · sol ${fmtM2(planArea(S.plan))} m²`;
+  drawPlan();
+}
+// ordre de la sélection en suivant le tour de la pièce (en partant d'un trou s'il y en a un)
+function selList(){
+  const n = S.plan.murs.length, sel = [...S.selWalls].filter(i => i < n).sort((a, b) => a - b);
+  if(!sel.length || sel.length === n) return sel;
+  let start = sel.find(i => !S.selWalls.has((i - 1 + n) % n)); if(start == null) start = sel[0];
+  const out = []; for(let k = 0; k < n; k++){ const i = (start + k) % n; if(S.selWalls.has(i)) out.push(i); }
+  return out;
+}
+function selNeed(){ if(!S.selWalls.size){ toast("Touchez d'abord un ou plusieurs murs sur le dessin."); return false; } return true; }
+$("#selToggle").onclick = () => {
+  if(S.plan.mode !== "murs") setPMode("murs");
+  S.selMode = !S.selMode; if(!S.selMode) S.selWalls = new Set(); selRefresh();
+};
+$("#selAll").onclick = () => { S.selWalls = new Set(S.plan.murs.map((_, i) => i)); selRefresh(); };
+$("#selNone").onclick = () => { S.selWalls = new Set(); selRefresh(); };
+$("#selSku").onclick = () => { if(selNeed()) skuSheet(new Set(S.selWalls)); };
+
+/* -- Vue de face (élévation cotée) des murs choisis -- */
+function elevSvg(p, idx){
+  const H = +p.hauteur || 250, gap = 70, fs = 13, top = 100, bot = 90;
+  let x = 40, g = "";
+  idx.forEach(i => {
+    const L = +p.murs[i].len || 0; if(!L) return;
+    const ops = p.ouvertures.filter(o => o.mur === i).map(o => { const a = o.type === "Porte" || o.type === "Passage" ? 0 : Math.max(0, +o.allege || 0);
+      const s0 = Math.max(0, +o.pos || 0); return {o, s0, s1:Math.min(L, s0 + (+o.w || 0)), a, h:Math.min(H - a, +o.h || 0)}; }).sort((u, v) => u.s0 - v.s0);
+    const Y = z => top + H - z;
+    g += `<rect x="${x}" y="${top}" width="${L}" height="${H}" fill="#F5F1E8" stroke="#24454A" stroke-width="3"/>`;
+    g += `<text x="${x + L / 2}" y="${top - 38}" font-size="${fs * 1.2}" font-weight="700" fill="#24454A" text-anchor="middle">Mur M${i + 1}</text>`;
+    // cote totale
+    g += `<line x1="${x}" y1="${top - 16}" x2="${x + L}" y2="${top - 16}" stroke="#5E6F70" stroke-width="1.2"/><line x1="${x}" y1="${top - 22}" x2="${x}" y2="${top - 10}" stroke="#5E6F70"/><line x1="${x + L}" y1="${top - 22}" x2="${x + L}" y2="${top - 10}" stroke="#5E6F70"/>`;
+    g += `<text x="${x + L / 2}" y="${top - 21}" font-size="${fs}" font-weight="700" fill="#24454A" text-anchor="middle">${Math.round(L)}</text>`;
+    ops.forEach(({o, s0, s1, a, h}) => {
+      const fill = o.type === "Porte" ? "#E7D5C3" : o.type === "Passage" ? "#EFE8DC" : "#D7E6EA";
+      g += `<rect x="${x + s0}" y="${Y(a + h)}" width="${s1 - s0}" height="${h}" fill="${fill}" stroke="#965A2E" stroke-width="2"/>`;
+      g += `<text x="${x + (s0 + s1) / 2}" y="${Y(a + h / 2)}" font-size="${fs}" fill="#965A2E" text-anchor="middle" font-weight="700">${esc(o.type)}</text>`;
+      g += `<text x="${x + (s0 + s1) / 2}" y="${Y(a + h / 2) + fs + 3}" font-size="${fs * .9}" fill="#965A2E" text-anchor="middle">${Math.round(s1 - s0)} × ${h}</text>`;
+      if(a) { g += `<line x1="${x + s1 + 8}" y1="${Y(0)}" x2="${x + s1 + 8}" y2="${Y(a)}" stroke="#965A2E" stroke-dasharray="4 3"/><text x="${x + s1 + 12}" y="${Y(a / 2) + 4}" font-size="${fs * .85}" fill="#965A2E">all. ${a}</text>`; }
+    });
+    // chaîne de cotes en bas : pleins et ouvertures
+    const cuts = [0]; ops.forEach(({s0, s1}) => cuts.push(s0, s1)); cuts.push(L);
+    const c = [...new Set(cuts.map(v => Math.round(v)))].sort((u, v) => u - v);
+    const yb = top + H + 22;
+    g += `<line x1="${x}" y1="${yb}" x2="${x + L}" y2="${yb}" stroke="#5E6F70" stroke-width="1.2"/>`;
+    c.forEach(v => g += `<line x1="${x + v}" y1="${yb - 6}" x2="${x + v}" y2="${yb + 6}" stroke="#5E6F70"/>`);
+    for(let k = 0; k < c.length - 1; k++){ const d = c[k + 1] - c[k]; if(d > 0) g += `<text x="${x + (c[k] + c[k + 1]) / 2}" y="${yb + 20}" font-size="${fs}" fill="#24454A" text-anchor="middle">${d}</text>`; }
+    // hauteur
+    g += `<line x1="${x - 16}" y1="${top}" x2="${x - 16}" y2="${top + H}" stroke="#5E6F70" stroke-width="1.2"/><text x="${x - 22}" y="${top + H / 2}" font-size="${fs}" font-weight="700" fill="#24454A" text-anchor="middle" transform="rotate(-90 ${x - 22} ${top + H / 2})">${H}</text>`;
+    x += L + gap;
+  });
+  const W = x - gap + 40, Ht = top + H + bot;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${Math.max(W, 200)} ${Ht}" font-family="Helvetica,Arial,sans-serif"><rect width="100%" height="100%" fill="#fff"/><text x="40" y="24" font-size="15" fill="#5E6F70">${esc(p.nom || "")} · vue de face · cotes en cm</text>${g}</svg>`;
+}
+$("#selElev").onclick = () => {
+  if(!selNeed()) return;
+  const idx = selList(), svg = elevSvg(S.plan, idx);
+  sheet(`<h3 style="margin:0 0 6px">Vue de face · ${idx.map(i => "M" + (i + 1)).join(", ")}</h3>
+  <p class="muted small" style="margin:0 0 8px">Murs dépliés côte à côte, vus de l'intérieur de la pièce. Faites glisser pour voir la suite.</p>
+  <div style="overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:#fff"><div style="min-width:${Math.min(1600, 260 * idx.length)}px">${svg.replace("<svg ", '<svg style="width:100%;height:auto;display:block" ')}</div></div>
+  <div class="grid2" style="margin-top:10px"><button class="btn primary" id="elPng">Image</button><button class="btn" id="elPdf">PDF</button></div>`, () => {
+    $("#elPng").onclick = async () => { try {
+      const vb = svg.match(/viewBox="0 0 ([\d.]+) ([\d.]+)"/), w = 2400, h = Math.round(w * vb[2] / vb[1]);
+      const im = await loadImg("data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg));
+      const c = document.createElement("canvas"); c.width = w; c.height = h; const g = c.getContext("2d"); g.fillStyle = "#fff"; g.fillRect(0, 0, w, h); g.drawImage(im, 0, 0, w, h);
+      shareImage(c.toDataURL("image/png"), (S.plan.nom || "plan").replace(/[^\wÀ-ÿ-]+/g, "-") + "-vue-de-face.png");
+    } catch { toast("L'image n'a pas pu être créée."); } };
+    $("#elPdf").onclick = () => printHtml(`<h2>Vue de face · ${idx.map(i => "M" + (i + 1)).join(", ")}</h2>${svg}${wallsTable(S.plan, idx)}`, (S.plan.nom || "plan") + "-vue-de-face");
+  });
+};
+
+/* -- Nouveau plan avec seulement les murs choisis -- */
+$("#selZone").onclick = async () => {
+  if(!selNeed()) return;
+  const p = S.plan, idx = selList(), map = new Map(idx.map((i, k) => [i, k]));
+  const murs = idx.map((i, k) => ({len:p.murs[i].len, turn:k < idx.length - 1 ? p.murs[i].turn : 90}));
+  const ouvertures = p.ouvertures.filter(o => map.has(o.mur)).map(o => Object.assign({}, o, {mur:map.get(o.mur)}));
+  await DB.put("plans", Object.assign(p, {modifie:Date.now()}));
+  newPlan({mode:"murs", nom:"Zone " + idx.map(i => "M" + (i + 1)).join("-") + " · " + (p.nom || "pièce"), hauteur:p.hauteur, murs, ouvertures,
+    notes:`Zone tirée du plan « ${p.nom || ""} » (murs ${idx.map(i => "M" + (i + 1)).join(", ")}).`});
+  await DB.put("plans", Object.assign(S.plan, {modifie:Date.now()})); await touch(S.project);
+  toast("Nouveau plan créé avec les murs choisis. Le plan d'origine est conservé.", 4500);
+};
+
+/* -- Modifier plusieurs murs d'un coup -- */
+$("#selEdit").onclick = () => {
+  if(!selNeed()) return;
+  const p = S.plan, idx = selList();
+  sheet(`<h3 style="margin:0 0 6px">Modifier ${idx.length} mur(s) · ${idx.map(i => "M" + (i + 1)).join(", ")}</h3>
+  <div class="stack">
+    <div><label class="f" for="meL">Même longueur pour tous (cm)</label><input class="i" id="meL" type="number" inputmode="decimal" placeholder="laisser vide pour ne pas changer"></div>
+    <div><label class="f" for="meD">Ou ajouter / retirer à chacun (cm, ex. -2)</label><input class="i" id="meD" type="number" inputmode="decimal" placeholder="0"></div>
+    <div><label class="f" for="meA">Angle au coin suivant (°)</label><input class="i" id="meA" type="number" inputmode="numeric" placeholder="laisser vide pour ne pas changer"></div>
+    <div><label class="f" for="meH">Hauteur sous plafond de la pièce (cm)</label><input class="i" id="meH" type="number" inputmode="numeric" value="${p.hauteur || ""}"></div>
+    <button class="btn primary block" id="meOk">Appliquer</button>
+  </div>`, () => {
+    $("#meOk").onclick = () => {
+      const num = id => { const v = String($(id).value).trim().replace(",", "."); return v === "" ? null : +v; };
+      const L = num("#meL"), D = num("#meD"), A = num("#meA"), Hh = num("#meH");
+      idx.forEach(i => { const w = p.murs[i]; if(L > 0) w.len = Math.round(L); else if(D) w.len = Math.max(1, Math.round((+w.len || 0) + D)); if(A != null && !isNaN(A)) w.turn = Math.max(-180, Math.min(180, Math.round(A))); });
+      if(Hh > 0){ p.hauteur = Math.round(Hh); $("#rH").value = $("#wH").value = p.hauteur; }
+      closeSheet(); renderWalls(); selRefresh(); toast("Murs modifiés.");
+    };
+  });
+};
+
+/* ================= PDF / impression ================= */
+const PRINT_CSS = `@page{size:A4;margin:12mm}body{font-family:Helvetica,Arial,sans-serif;color:#24454A;margin:0;font-size:10.5pt}
+h1{font-size:20pt;margin:0 0 2mm}h2{font-size:14pt;margin:8mm 0 3mm;border-bottom:1.5pt solid #965A2E;padding-bottom:1mm}h3{font-size:12pt;margin:5mm 0 2mm}
+table{width:100%;border-collapse:collapse;margin:2mm 0}td,th{border-bottom:.5pt solid #ccc;padding:1.2mm 1mm;text-align:left}th{background:#F5F1E8}td.n,th.n{text-align:right}
+.muted{color:#5E6F70}.pb{page-break-before:always}.ph{display:grid;grid-template-columns:1fr 1fr;gap:3mm}.ph img{width:100%;border-radius:2mm;display:block}.ph figure{margin:0;break-inside:avoid}.ph figcaption{font-size:8.5pt;color:#5E6F70}
+svg{max-width:100%;height:auto}.plan svg{max-height:120mm;display:block;margin:0 auto}.box{background:#F5F1E8;border-radius:2mm;padding:3mm;margin:2mm 0}.warn{color:#B3261E}`;
+function fullDoc(body, title){ return `<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8"><title>${esc(title)}</title><style>${PRINT_CSS}</style></head><body>${body}</body></html>`; }
+function printHtml(body, name){
+  const html = fullDoc(body, name);
+  if(window.ReactNativeWebView){ // appli iPhone : vrai PDF puis menu Partager (Mail, WhatsApp, Imprimer…)
+    window.ReactNativeWebView.postMessage(JSON.stringify({type:"pdf", html, name:(name || "document").replace(/[^\wÀ-ÿ-]+/g, "-") + ".pdf"}));
+    toast("Préparation du PDF…"); return;
+  }
+  const pa = $("#printArea"); pa.innerHTML = `<style>${PRINT_CSS.replace("@page{size:A4;margin:12mm}", "")}</style><div style="padding:6mm">${body}</div>`;
+  pa.hidden = false; setTimeout(() => { window.print(); setTimeout(() => pa.hidden = true, 500); }, 80);
+}
+/* surfaces d'un mur : brute, ouvertures, nette (m²) */
+function wallStats(p, i){
+  const H = +p.hauteur || 0, L = +p.murs[i].len || 0;
+  const open = p.ouvertures.filter(o => o.mur === i).reduce((s, o) => s + (+o.w || 0) * Math.min(+o.h || 0, H || 1e9), 0) / 1e4;
+  const gross = L * H / 1e4; return {L, gross, open, net:Math.max(0, gross - open)};
+}
+function wallsTable(p, idx){
+  let tg = 0, tn = 0;
+  const rows = idx.map(i => { const w = wallStats(p, i); tg += w.gross; tn += w.net;
+    return `<tr><td>M${i + 1}</td><td class="n">${Math.round(w.L)}</td><td class="n">${fmtM2(w.gross)}</td><td class="n">${fmtM2(w.open)}</td><td class="n"><b>${fmtM2(w.net)}</b></td></tr>`; }).join("");
+  return `<table><tr><th>Mur</th><th class="n">Longueur (cm)</th><th class="n">Surface brute (m²)</th><th class="n">Ouvertures (m²)</th><th class="n">Surface nette (m²)</th></tr>${rows}<tr><th>Total</th><th></th><th class="n">${fmtM2(tg)}</th><th></th><th class="n">${fmtM2(tn)}</th></tr></table>`;
+}
+function planChecks(p){
+  const pts = planPoints(p), z = pts[pts.length - 1], gap = Math.round(Math.hypot(z[0], z[1])), out = [];
+  if(gap >= 2) out.push(`La pièce ne se referme pas : écart de ${gap} cm. Une longueur ou un angle est à revérifier au mètre.`);
+  const odd = p.murs.map((w, i) => [i, +w.turn]).filter(([, t]) => t % 45 !== 0); if(odd.length) out.push(`Angles hors équerre : ${odd.map(([i, t]) => `M${i + 1} → ${t}°`).join(", ")}.`);
+  const zero = p.murs.map((w, i) => i).filter(i => !(+p.murs[i].len > 0)); if(zero.length) out.push(`Murs sans longueur : ${zero.map(i => "M" + (i + 1)).join(", ")}.`);
+  if(!(+p.hauteur > 0)) out.push("Hauteur sous plafond non renseignée : les surfaces de murs ne peuvent pas être calculées.");
+  return out;
+}
+function planReport(pl){
+  const idx = pl.murs.map((_, i) => i), per = pl.murs.reduce((s, w) => s + (+w.len || 0), 0) / 100;
+  const src = /LiDAR/.test(pl.notes || "") ? "scan LiDAR" : "relevé manuel", checks = planChecks(pl);
+  // vues de face par groupes de murs pour tenir sur la largeur de la page
+  const groups = []; let g = [], sum = 0; idx.forEach(i => { const L = +pl.murs[i].len || 0; if(g.length && sum + L > 900){ groups.push(g); g = []; sum = 0; } g.push(i); sum += L + 70; }); if(g.length) groups.push(g);
+  return `<h2>${esc(pl.nom)}</h2>
+  <div class="box">Sol : <b>${fmtM2(planArea(pl))} m²</b> · Périmètre : <b>${fmtM2(per)} m</b> · Hauteur : <b>${pl.hauteur || "?"} cm</b> · Source : ${src}</div>
+  <div class="plan">${planSvg(pl, {title:false})}</div>
+  <h3>Surfaces des murs</h3>${wallsTable(pl, idx)}
+  ${pl.ouvertures.length ? `<h3>Portes et fenêtres</h3><table><tr><th>Type</th><th>Mur</th><th class="n">Position (cm)</th><th class="n">L × H (cm)</th><th class="n">Allège (cm)</th></tr>${pl.ouvertures.map(o => `<tr><td>${esc(o.type)}</td><td>M${o.mur + 1}</td><td class="n">${o.pos}</td><td class="n">${o.w} × ${o.h}</td><td class="n">${o.allege || 0}</td></tr>`).join("")}</table>` : ""}
+  <h3>Contrôle de cohérence</h3>${checks.length ? checks.map(c => `<p class="warn">⚠ ${esc(c)}</p>`).join("") : `<p>✓ Pièce fermée, angles d'équerre, toutes les longueurs renseignées.</p>`}
+  ${pl.notes ? `<p class="muted"><b>Notes :</b> ${esc(pl.notes)}</p>` : ""}
+  <div class="pb"></div><h3>Vues de face · ${esc(pl.nom)}</h3>${groups.map(gr => elevSvg(pl, gr)).join("")}`;
+}
+async function smallJpeg(dataUrl, side = 900){ try { const im = await loadImg(dataUrl); const k = Math.min(1, side / Math.max(im.naturalWidth, im.naturalHeight)); return toJpeg(im, im.naturalWidth * k, im.naturalHeight * k, .8); } catch { return dataUrl; } }
+/* ================= Export du dossier : choix des éléments et des formats ================= */
+const slug = t => (t || "fichier").normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^\w-]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 60) || "fichier";
+function ficheBlock(p){
+  const c = p.fiche || {nom:p.client, adresse:p.adresse}, row = (k, v) => v ? `<tr><th style="width:32%">${k}</th><td>${esc(v)}</td></tr>` : "";
+  const adr = [c.adresse, [c.cp, c.ville].filter(Boolean).join(" ")].filter(Boolean).join(", ");
+  const t = row("Client", [c.prenom, c.nom].filter(Boolean).join(" ")) + row("Adresse", adr) + row("Téléphone", c.tel) + row("Mail", c.mail);
+  return (t ? `<h2>Fiche client</h2><table>${t}</table>` : "") + (c.notes ? `<h3>Notes sur le client</h3><p>${esc(c.notes).replace(/\n/g, "<br>")}</p>` : "") + (p.notes ? `<h2>Notes du chantier</h2><p>${esc(p.notes).replace(/\n/g, "<br>")}</p>` : "");
+}
+function vcard(p){
+  const c = p.fiche || {nom:p.client, adresse:p.adresse}, e = v => String(v || "").replace(/\\/g, "\\\\").replace(/[,;]/g, m => "\\" + m).replace(/\n/g, "\\n");
+  return ["BEGIN:VCARD", "VERSION:3.0", `N:${e(c.nom)};${e(c.prenom)};;;`, `FN:${e([c.prenom, c.nom].filter(Boolean).join(" ") || p.nom)}`,
+    c.tel ? `TEL;TYPE=CELL:${c.tel}` : "", c.mail ? `EMAIL:${c.mail}` : "", (c.adresse || c.ville) ? `ADR;TYPE=HOME:;;${e(c.adresse)};${e(c.ville)};;${e(c.cp)};France` : "",
+    `NOTE:${e(["Chantier : " + p.nom, c.notes].filter(Boolean).join("\n"))}`, "END:VCARD"].filter(Boolean).join("\r\n") + "\r\n";
+}
+/* ZIP sans compression (lisible par Fichiers sur iPhone, Windows, Mac) */
+const CRC_T = (() => { const t = new Uint32Array(256); for(let n = 0; n < 256; n++){ let c = n; for(let k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; t[n] = c >>> 0; } return t; })();
+function crc32(u){ let c = 0xFFFFFFFF; for(let i = 0; i < u.length; i++) c = CRC_T[(c ^ u[i]) & 255] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; }
+async function makeZip(files){
+  const d = new Date(), time = (d.getHours() << 11) | (d.getMinutes() << 5) | (d.getSeconds() >> 1), date = ((d.getFullYear() - 1980) << 9) | ((d.getMonth() + 1) << 5) | d.getDate();
+  const parts = [], cen = []; let off = 0;
+  for(const f of files){
+    const data = new Uint8Array(await f.blob.arrayBuffer()), name = new TextEncoder().encode(f.name), crc = crc32(data);
+    const h = new DataView(new ArrayBuffer(30)); h.setUint32(0, 0x04034b50, true); h.setUint16(4, 20, true); h.setUint16(6, 0x0800, true); h.setUint16(10, time, true); h.setUint16(12, date, true); h.setUint32(14, crc, true); h.setUint32(18, data.length, true); h.setUint32(22, data.length, true); h.setUint16(26, name.length, true);
+    const c = new DataView(new ArrayBuffer(46)); c.setUint32(0, 0x02014b50, true); c.setUint16(4, 20, true); c.setUint16(6, 20, true); c.setUint16(8, 0x0800, true); c.setUint16(12, time, true); c.setUint16(14, date, true); c.setUint32(16, crc, true); c.setUint32(20, data.length, true); c.setUint32(24, data.length, true); c.setUint16(28, name.length, true); c.setUint32(42, off, true);
+    parts.push(h.buffer, name, data); cen.push(c.buffer, name); off += 30 + name.length + data.length;
+  }
+  const cs = cen.reduce((s, x) => s + x.byteLength, 0), e = new DataView(new ArrayBuffer(22));
+  e.setUint32(0, 0x06054b50, true); e.setUint16(8, files.length, true); e.setUint16(10, files.length, true); e.setUint32(12, cs, true); e.setUint32(16, off, true);
+  return new Blob([...parts, ...cen, e.buffer], {type:"application/zip"});
+}
+const EXP_CATS = [
+  {k:"fiche", label:"Fiche client et notes", fmts:[["pdf", "PDF"], ["vcf", "Contact (.vcf)"]], on:true, def:["pdf"]},
+  {k:"plans", label:"Plans cotés", fmts:[["pdf", "PDF"], ["jpg", "JPEG"], ["dae", "SketchUp 3D (.dae)"], ["stl", "SketchUp gratuit (.stl)"], ["dxf", "Plan 2D (.dxf)"]], on:true, def:["pdf"]},
+  {k:"scans", label:"Scans de la pièce", fmts:[["pdf", "Plan coté (PDF)"], ["dae", "SketchUp 3D (.dae)"], ["json", "Données du scan (.json)"]], on:false, def:["pdf"]},
+  {k:"photos", label:"Photos", fmts:[["pdf", "PDF"], ["jpg", "JPEG"]], on:true, def:["pdf"]},
+  {k:"rendus", label:"Rendus", fmts:[["pdf", "PDF"], ["jpg", "JPEG"]], on:true, def:["pdf"]},
+  {k:"videos", label:"Vidéos", fmts:[["vid", "Fichier vidéo"]], on:false, def:["vid"]}
+];
+async function exportSheet(){
+  const p = S.project; if(!p) return;
+  const [media, plans] = await Promise.all([DB.byProject("media", p.id), DB.byProject("plans", p.id)]);
+  plans.sort((a, b) => a.cree - b.cree); media.sort((a, b) => a.cree - b.cree);
+  const items = {fiche:[p], plans, scans:media.filter(m => m.type === "scan"), photos:media.filter(m => m.type === "photo" || m.type === "frame"), rendus:media.filter(m => m.type === "rendu"), videos:media.filter(m => m.type === "video")};
+  const st = {}; EXP_CATS.forEach(c => st[c.k] = {on:c.on && items[c.k].length > 0, f:new Set(c.def), sel:new Set(items[c.k].map(x => x.id))});
+  const itemLab = (k, x, i) => k === "plans" ? `${esc(x.nom)} · ${fmtM2(planArea(x))} m²` : k === "scans" ? `${esc(x.nom)} · ${x.resume || ""}` : k === "videos" ? `Vidéo ${i + 1} · ${fmtDate(x.cree)}` : "";
+  const html = `<h2 id="sheetTitle">Exporter le dossier</h2><p class="small muted" style="margin:4px 0 12px">Cochez ce qu'il faut envoyer et choisissez les formats. Tout ce qui est en PDF est réuni dans un seul document ; les autres fichiers partent ensemble.</p>
+  <div class="stack" style="gap:10px">${EXP_CATS.filter(c => items[c.k].length).map(c => { const it = items[c.k], many = c.k !== "fiche";
+    return `<div class="card stack" style="gap:8px;padding:12px">
+      <label class="row" style="gap:10px;font-weight:700;align-items:center"><input type="checkbox" data-ec="${c.k}" ${st[c.k].on ? "checked" : ""} style="width:22px;height:22px"> ${c.label}${many ? ` <span class="small muted" data-en="${c.k}">(${it.length})</span>` : ""}</label>
+      <div class="row" style="gap:6px;flex-wrap:wrap" data-eb="${c.k}">${c.fmts.map(([f, l]) => `<button type="button" class="chip" data-ef="${c.k}:${f}" aria-pressed="${c.def.includes(f)}">${l}</button>`).join("")}</div>
+      ${many && it.length > 1 ? `<button type="button" class="btn ghost small" data-et="${c.k}" style="align-self:flex-start">Choisir…</button><div data-el="${c.k}" hidden>${(c.k === "photos" || c.k === "rendus")
+        ? `<div class="media">${it.map(x => `<button type="button" class="mitem" data-ei="${c.k}:${x.id}" aria-pressed="true"><img src="${x.data}" alt="" loading="lazy"><span class="tag">✓</span></button>`).join("")}</div>`
+        : it.map((x, i) => `<label class="row" style="gap:8px;padding:4px 0"><input type="checkbox" checked data-ei="${c.k}:${x.id}"> ${itemLab(c.k, x, i)}</label>`).join("")}</div>` : ""}
+    </div>`; }).join("")}
+    <button class="btn primary block" id="expGo"><svg><use href="#i-share"/></svg>Exporter</button>
+    <p class="small muted" id="expSum" style="margin:0;text-align:center"></p>
+  </div>`;
+  sheet(html, b => {
+    const sum = () => {
+      let nPdf = 0, nFiles = 0;
+      EXP_CATS.forEach(c => { const s = st[c.k]; if(!s.on || !items[c.k].length) return; const n = c.k === "fiche" ? 1 : s.sel.size; s.f.forEach(f => f === "pdf" ? nPdf += n : nFiles += (c.k === "fiche" ? 1 : n)); });
+      b.querySelector("#expSum").textContent = (nPdf ? "1 PDF" : "") + (nPdf && nFiles ? " + " : "") + (nFiles ? `${nFiles} fichier(s)${nFiles > 1 ? " réunis dans un .zip" : ""}` : "") || "Rien de coché";
+      EXP_CATS.forEach(c => { const e = b.querySelector(`[data-en="${c.k}"]`); if(e) e.textContent = `(${st[c.k].sel.size}/${items[c.k].length})`; const bb = b.querySelector(`[data-eb="${c.k}"]`); if(bb) bb.style.opacity = st[c.k].on ? 1 : .45; });
+    };
+    b.querySelectorAll("[data-ec]").forEach(x => x.onchange = () => { st[x.dataset.ec].on = x.checked; sum(); });
+    b.querySelectorAll("[data-ef]").forEach(x => x.onclick = () => { const [k, f] = x.dataset.ef.split(":"), s = st[k];
+      if(s.f.has(f)){ if(s.f.size === 1) return toast("Gardez au moins un format."); s.f.delete(f); } else s.f.add(f);
+      x.setAttribute("aria-pressed", s.f.has(f)); if(!s.on){ s.on = true; b.querySelector(`[data-ec="${k}"]`).checked = true; } sum(); });
+    b.querySelectorAll("[data-et]").forEach(x => x.onclick = () => { const l = b.querySelector(`[data-el="${x.dataset.et}"]`); l.hidden = !l.hidden; x.textContent = l.hidden ? "Choisir…" : "Masquer la liste"; });
+    b.querySelectorAll("[data-ei]").forEach(x => { const [k, id] = x.dataset.ei.split(":");
+      const set = v => { v ? st[k].sel.add(id) : st[k].sel.delete(id); if(x.tagName === "BUTTON"){ x.setAttribute("aria-pressed", v); x.style.opacity = v ? 1 : .35; x.querySelector(".tag").textContent = v ? "✓" : "—"; } sum(); };
+      if(x.tagName === "BUTTON") x.onclick = () => set(!st[k].sel.has(id)); else x.onchange = () => set(x.checked); });
+    b.querySelector("#expGo").onclick = () => runExport(p, items, st);
+    sum();
+  });
+}
+async function runExport(p, items, st){
+  const pick = k => st[k].on ? items[k].filter(x => k === "fiche" || st[k].sel.has(x.id)) : [];
+  const has = (k, f) => st[k].on && st[k].f.has(f) && pick(k).length;
+  const go = $("#expGo"); go.disabled = true; go.textContent = "Préparation…";
+  try {
+    const files = [], used = new Set(), add = (name, blob) => { let n = name, i = 2; while(used.has(n)) n = name.replace(/(\.\w+)$/, `-${i++}$1`); used.add(n); files.push({name:n, blob}); };
+    const scanPlans = pick("scans").map(sc => { try { const pl = roomToPlan(JSON.parse(sc.json)); pl.nom = "Scan du " + fmtDate(sc.cree); return [sc, Object.assign(blankPlan(), pl)]; } catch { return [sc, null]; } });
+    // fichiers
+    if(has("fiche", "vcf")) add(slug([p.fiche?.prenom, p.fiche?.nom].filter(Boolean).join(" ") || p.client || p.nom) + ".vcf", new Blob([vcard(p)], {type:"text/vcard"}));
+    for(const pl of pick("plans")){ const b = slug(pl.nom); SKU_ONLY = null;
+      if(st.plans.f.has("jpg")) add(b + ".jpg", dataUrlToBlob(await planPng(pl, "image/jpeg")));
+      if(st.plans.f.has("dae")) add(b + ".dae", new Blob([planDae(pl)], {type:"model/vnd.collada+xml"}));
+      if(st.plans.f.has("stl")) add(b + ".stl", new Blob([planStl(pl)], {type:"model/stl"}));
+      if(st.plans.f.has("dxf")) add(b + ".dxf", new Blob([planDxf(pl)], {type:"image/vnd.dxf"})); }
+    for(const [sc, pl] of scanPlans){ const b = slug(sc.nom);
+      if(st.scans.f.has("json")) add(b + ".json", new Blob([sc.json], {type:"application/json"}));
+      if(st.scans.f.has("dae") && pl) add(b + ".dae", new Blob([planDae(pl)], {type:"model/vnd.collada+xml"})); }
+    for(const k of ["photos", "rendus"]) if(has(k, "jpg")) pick(k).forEach((m, i) => add(`${k === "photos" ? "photo" : "rendu"}-${String(i + 1).padStart(2, "0")}.jpg`, dataUrlToBlob(m.data)));
+    if(has("videos", "vid")) pick("videos").forEach((m, i) => { const ext = (m.nom || "").match(/\.\w+$/)?.[0] || (/quicktime/.test(m.blob.type) ? ".mov" : /webm/.test(m.blob.type) ? ".webm" : ".mp4"); add(`video-${String(i + 1).padStart(2, "0")}${ext}`, m.blob); });
+    // PDF
+    let body = "";
+    const wantPdf = ["fiche", "plans", "scans", "photos", "rendus"].some(k => has(k, "pdf"));
+    if(wantPdf){
+      const parts = [];
+      if(has("fiche", "pdf")) parts.push(ficheBlock(p));
+      if(has("plans", "pdf")) pick("plans").forEach(pl => parts.push(planReport(pl)));
+      if(has("scans", "pdf")) scanPlans.forEach(([, pl]) => pl && parts.push(planReport(pl)));
+      for(const k of ["photos", "rendus"]) if(has(k, "pdf")){ const ph = []; for(const m of pick(k).slice(0, 60)) ph.push(`<figure><img src="${await smallJpeg(m.data)}"><figcaption>${m.planPhoto ? "Plan papier" : k === "rendus" ? "Rendu" : "Photo"} · ${fmtDate(m.cree)}</figcaption></figure>`); parts.push(`<h2>${k === "photos" ? "Photos" : "Rendus"}</h2><div class="ph">${ph.join("")}</div>`); }
+      body = `<h1>${esc(p.nom)}</h1><p class="muted">${esc([p.client, p.adresse].filter(Boolean).join(" · "))}${p.client || p.adresse ? " · " : ""}Atelier Löwe · dossier du ${new Date().toLocaleDateString("fr-FR")}</p>` + parts.map((x, i) => (i ? '<div class="pb"></div>' : "") + x).join("");
+    }
+    if(!body && !files.length){ go.disabled = false; go.innerHTML = '<svg><use href="#i-share"/></svg>Exporter'; return toast("Cochez au moins un élément."); }
+    const sendFiles = async () => {
+      const big = files.reduce((s, f) => s + f.blob.size, 0);
+      if(big > 150e6) toast("Envoi volumineux (" + Math.round(big / 1e6) + " Mo) : préférez AirDrop ou Fichiers à WhatsApp.", 5000);
+      if(files.length === 1) return shareImage(files[0].blob, files[0].name);
+      return shareImage(await makeZip(files), slug(p.nom) + ".zip");
+    };
+    if(body && files.length){
+      printHtml(body, p.nom);
+      sheet(`<h2 id="sheetTitle">Étape 2</h2><p class="small muted" style="margin:6px 0 14px">Le PDF est parti. Envoyez maintenant ${files.length > 1 ? `les ${files.length} fichiers (réunis dans un .zip)` : `le fichier ${esc(files[0].name)}`}.</p><button class="btn primary block" id="exp2"><svg><use href="#i-share"/></svg>Envoyer ${files.length > 1 ? "les fichiers" : "le fichier"}</button>`,
+        bb => bb.querySelector("#exp2").onclick = async () => { closeSheet(); await sendFiles(); });
+    } else if(body){ closeSheet(); printHtml(body, p.nom); }
+    else { closeSheet(); await sendFiles(); }
+  } catch(e){ console.warn(e); toast("L'export n'a pas pu être préparé."); go.disabled = false; go.innerHTML = '<svg><use href="#i-share"/></svg>Exporter'; }
+}
+async function exportDossier(){ return exportSheet(); }
+/* ================= Mesure sur photo ================= */
+const REFS = [["Porte standard (hauteur)", 204], ["Porte (largeur)", 83], ["Prise ↔ sol", 30], ["Carreau 60 cm", 60], ["Feuille A4 (long.)", 29.7], ["Mètre déplié", 100]];
+const M = {mode:"cal", pts:[], k:0, list:[], media:null};
+function openMeasure(media){
+  Object.assign(M, {mode:"cal", pts:[], k:0, list:[], media});
+  if(!S.project || S.project.id !== media.projectId) DB.get("projects", media.projectId).then(p => S.project = p);
+  const im = $("#mImg"); im.onload = () => { const c = $("#mCan"); c.width = im.naturalWidth; c.height = im.naturalHeight; mDraw(); }; im.src = media.data;
+  $("#refChips").innerHTML = REFS.map(([n, v]) => `<button type="button" class="chip" data-r="${v}">${n} · ${v}</button>`).join("");
+  $$("#refChips .chip").forEach(b => b.onclick = () => { $("#calLen").value = b.dataset.r; });
+  setMMode("cal"); renderMList(); show("measure");
+}
+function setMMode(m){
+  if(m === "mes" && !M.k) return toast("Étalonnez d'abord sur une longueur connue.");
+  M.mode = m; M.pts = [];
+  $$("[data-mmode]").forEach(b => b.setAttribute("aria-pressed", b.dataset.mmode === m ? "true" : "false"));
+  $("#calBox").hidden = m !== "cal";
+  $("#mHelp").textContent = m === "cal" ? "Touchez les deux bouts d'une longueur que vous connaissez (une porte, un carreau, votre mètre posé au mur), puis indiquez-la." : "Touchez deux points : la distance s'affiche. Recommencez autant que nécessaire.";
+  mDraw();
+}
+$$("[data-mmode]").forEach(b => b.onclick = () => setMMode(b.dataset.mmode));
+$("#mCan").addEventListener("pointerdown", e => {
+  const c = $("#mCan"), r = c.getBoundingClientRect(); const p = [(e.clientX - r.left) / r.width * c.width, (e.clientY - r.top) / r.height * c.height];
+  if(M.pts.length >= 2) M.pts = [];
+  M.pts.push(p);
+  if(M.pts.length === 2 && M.mode === "mes"){
+    const d = Math.hypot(M.pts[1][0] - M.pts[0][0], M.pts[1][1] - M.pts[0][1]) / M.k;
+    const nom = "Mesure " + (M.list.length + 1);
+    M.list.push({nom, cm:Math.round(d), a:M.pts[0], b:M.pts[1]}); M.pts = []; renderMList();
+  }
+  mDraw();
+});
+$("#calOk").onclick = () => {
+  const L = +$("#calLen").value;
+  if(M.pts.length !== 2) return toast("Touchez d'abord les deux bouts sur la photo.");
+  if(!(L > 0)) return toast("Indiquez la longueur réelle en cm.");
+  M.k = Math.hypot(M.pts[1][0] - M.pts[0][0], M.pts[1][1] - M.pts[0][1]) / L; M.cal = [M.pts[0], M.pts[1], L];
+  toast("Étalonné. Mesurez maintenant."); setMMode("mes");
+};
+function mDraw(){
+  const c = $("#mCan"), g = c.getContext("2d"); g.clearRect(0, 0, c.width, c.height);
+  const lw = Math.max(3, c.width / 300), fs = Math.max(18, c.width / 32);
+  const seg = (a, b, col, lab) => {
+    g.strokeStyle = col; g.lineWidth = lw; g.beginPath(); g.moveTo(a[0], a[1]); g.lineTo(b[0], b[1]); g.stroke();
+    [a, b].forEach(q => { g.fillStyle = "#fff"; g.beginPath(); g.arc(q[0], q[1], lw * 2.2, 0, 7); g.fill(); g.strokeStyle = col; g.lineWidth = lw * .8; g.stroke(); });
+    if(lab){ const x = (a[0] + b[0]) / 2, y = (a[1] + b[1]) / 2; g.font = `700 ${fs}px system-ui`; const w = g.measureText(lab).width + fs * .6; g.fillStyle = col; g.fillRect(x - w / 2, y - fs * .75, w, fs * 1.5); g.fillStyle = "#fff"; g.textAlign = "center"; g.textBaseline = "middle"; g.fillText(lab, x, y); }
+  };
+  if(M.cal) seg(M.cal[0], M.cal[1], "#2E6B4A", M.cal[2] + " cm (réf.)");
+  M.list.forEach(m => seg(m.a, m.b, "#965A2E", m.cm + " cm"));
+  if(M.pts.length === 1){ g.fillStyle = "#fff"; g.beginPath(); g.arc(M.pts[0][0], M.pts[0][1], lw * 2.5, 0, 7); g.fill(); }
+  if(M.pts.length === 2) seg(M.pts[0], M.pts[1], M.mode === "cal" ? "#2E6B4A" : "#965A2E", "");
+}
+function renderMList(){
+  $("#mList").innerHTML = M.list.map((m, i) => `<div class="mrow"><input class="i" style="min-height:34px;padding:4px 8px;flex:1;margin-right:8px" value="${esc(m.nom)}" data-mn="${i}" aria-label="Nom de la mesure"><b>${m.cm} cm</b><button class="iconbtn" data-md="${i}" aria-label="Supprimer"><svg><use href="#i-trash"/></svg></button></div>`).join("");
+  $$("[data-mn]").forEach(x => x.oninput = () => M.list[+x.dataset.mn].nom = x.value);
+  $$("[data-md]").forEach(x => x.onclick = () => { M.list.splice(+x.dataset.md, 1); renderMList(); mDraw(); });
+  $("#mToPlan").hidden = M.list.length < 1;
+}
+$("#mToPlan").onclick = async () => {
+  const v = M.list.map(m => m.cm);
+  if(!S.project) S.project = await DB.get("projects", M.media.projectId);
+  newPlan({mode:"rect", L:v[0] || 400, l:v[1] || 300, hauteur:v[2] || 250, notes:"Mesures relevées sur photo (approchées) : " + M.list.map(m => `${m.nom} ${m.cm} cm`).join(", ")});
+  toast("Plan créé : longueur, largeur, hauteur = mesures 1, 2, 3. À corriger si besoin.", 4500);
+};
+
+/* ================= Outils atelier ================= */
+async function getTools(){ return (await DB.getKV("tools")) || DEFAULT_TOOLS; }
+function renderToolGrid(el, list, editable){
+  el.innerHTML = list.map((t, i) => `<div class="toolwrap"><a class="tool" href="${esc(t.u)}" target="_blank" rel="noopener"><span class="ic" style="background:${esc(t.c || "#24454A")}">${esc(t.l || t.n[0])}</span>${esc(t.n)}</a>${editable ? `<button class="del" data-td="${i}" aria-label="Retirer ${esc(t.n)}">×</button>` : ""}</div>`).join("");
+  if(editable) el.querySelectorAll("[data-td]").forEach(b => b.onclick = async () => { const l = await getTools(); l.splice(+b.dataset.td, 1); await DB.putKV("tools", l); renderTools(); });
+}
+async function renderTools(){
+  renderToolGrid($("#allTools"), await getTools(), true);
+  if(navigator.storage && navigator.storage.estimate){ const e = await navigator.storage.estimate(); $("#storageInfo").textContent = `Espace utilisé : ${(e.usage / 1e6).toFixed(0)} Mo sur ${(e.quota / 1e9).toFixed(1)} Go disponibles.`; }
+}
+$("#editTools").onclick = () => { $("#v-tools").classList.toggle("editing"); $("#editTools").textContent = $("#v-tools").classList.contains("editing") ? "Terminé" : "Modifier"; };
+$("#addTool").onclick = () => sheet(`<h2 id="sheetTitle">Ajouter un raccourci</h2><form id="tf" class="stack" style="margin-top:14px">
+  <div><label class="f" for="tfN">Nom</label><input class="i" id="tfN" required placeholder="Ex. Banque, Fournisseur bois"></div>
+  <div><label class="f" for="tfU">Adresse du site</label><input class="i" id="tfU" required inputmode="url" placeholder="https://…"></div>
+  <button class="btn primary block" type="submit">Ajouter</button></form>`, b => b.querySelector("#tf").onsubmit = async e => {
+    e.preventDefault(); let u = $("#tfU").value.trim(); if(!/^https?:\/\//i.test(u)) u = "https://" + u;
+    const n = $("#tfN").value.trim(); const cols = ["#24454A", "#965A2E", "#2E6B4A", "#3A6FB0", "#8A4F7D", "#B3402A"];
+    const l = await getTools(); l.push({n, u, c:cols[l.length % cols.length], l:n.slice(0, 2)}); await DB.putKV("tools", l); closeSheet(); renderTools();
+  });
+
+/* ================= Sauvegarde ================= */
+function blobToDataUrl(b){ return new Promise(res => { const r = new FileReader(); r.onload = () => res(r.result); r.readAsDataURL(b); }); }
+$("#exportAll").onclick = async () => {
+  toast("Préparation de la sauvegarde…", 6000);
+  const media = await DB.all("media");
+  for(const m of media) if(m.blob){ m.blobData = await blobToDataUrl(m.blob); delete m.blob; }
+  const data = {app:"lowe-atelier", v:1, date:Date.now(), projects:await DB.all("projects"), plans:await DB.all("plans"), media, tools:await DB.getKV("tools")};
+  const blob = new Blob([JSON.stringify(data)], {type:"application/json"});
+  shareImage(blob, `sauvegarde-atelier-lowe-${new Date().toISOString().slice(0, 10)}.json`);
+};
+$("#importAll").onclick = () => $("#fBackup").click();
+$("#fBackup").onchange = async e => {
+  const f = e.target.files[0]; e.target.value = ""; if(!f) return;
+  try {
+    const d = JSON.parse(await f.text()); if(d.app !== "lowe-atelier") throw 0;
+    for(const p of d.projects || []) await DB.put("projects", p);
+    for(const p of d.plans || []) await DB.put("plans", p);
+    for(const m of d.media || []){ if(m.blobData){ m.blob = dataUrlToBlob(m.blobData); delete m.blobData; } await DB.put("media", m); }
+    if(d.tools) await DB.putKV("tools", d.tools);
+    toast(`Sauvegarde importée : ${(d.projects || []).length} projet(s).`); renderTools();
+  } catch { toast("Ce fichier n'est pas une sauvegarde de l'appli."); }
+};
+
+
+/* ================= Scan LiDAR (appli iPhone) ================= */
+const NATIVE = !!window.ReactNativeWebView;
+if(NATIVE) $$(".native-only").forEach(e => e.hidden = false);
+async function startScan(){
+  if(!NATIVE) return toast("Le scan automatique est disponible dans l'appli iPhone.");
+  await ensureProject();
+  window.ReactNativeWebView.postMessage(JSON.stringify({type:"scan", name:"piece-" + Date.now()}));
+}
+$("#scanPlan").onclick = startScan;
+const flat = a => Array.isArray(a) ? a.flat(3).map(Number) : [];
+function roomToPlan(room){
+  const W = (room.walls || []).map(w => {
+    const t = flat(w.transform), d = flat(w.dimensions);
+    const cx = t[12], cz = t[14], ax = t[0], az = t[2], n = Math.hypot(ax, az) || 1, len = d[0] * 100;
+    const ux = ax / n, uz = az / n, h = len / 2;
+    return {a:[cx * 100 - ux * h, cz * 100 - uz * h], b:[cx * 100 + ux * h, cz * 100 + uz * h], len, haut:d[1] * 100, yb:(t[13] - d[1] / 2) * 100};
+  }).filter(w => w.len > 20);
+  if(W.length < 3) throw new Error("Pas assez de murs détectés");
+  const dist = (p, q) => Math.hypot(p[0] - q[0], p[1] - q[1]);
+  // Ordonner les murs autour du centre de la pièce, puis prolonger chaque mur
+  // jusqu'au suivant : les coins sont les croisements des murs (pièce toujours fermée).
+  const pts = W.flatMap(w => [w.a, w.b]);
+  const C = [pts.reduce((s, p) => s + p[0], 0) / pts.length, pts.reduce((s, p) => s + p[1], 0) / pts.length];
+  const ang = p => Math.atan2(p[1] - C[1], p[0] - C[0]);
+  const wrap = x => ((x + 3 * Math.PI) % (2 * Math.PI)) - Math.PI;
+  W.forEach(w => {
+    if(wrap(ang(w.b) - ang(w.a)) < 0){ const t = w.a; w.a = w.b; w.b = t; }
+    w.th = ang([(w.a[0] + w.b[0]) / 2, (w.a[1] + w.b[1]) / 2]);
+  });
+  W.sort((x, y) => x.th - y.th);
+  const V = [];
+  W.forEach((w, i) => {
+    const n = W[(i + 1) % W.length];
+    const d1 = [w.b[0] - w.a[0], w.b[1] - w.a[1]], d2 = [n.b[0] - n.a[0], n.b[1] - n.a[1]];
+    const l1 = Math.hypot(...d1) || 1, l2 = Math.hypot(...d2) || 1;
+    const cr = (d1[0] * d2[1] - d1[1] * d2[0]) / (l1 * l2);
+    if(Math.abs(cr) > 0.34){ // angle > 20° : croisement des deux murs
+      const t = ((n.a[0] - w.a[0]) * d2[1] - (n.a[1] - w.a[1]) * d2[0]) / (d1[0] * d2[1] - d1[1] * d2[0]);
+      const X = [w.a[0] + d1[0] * t, w.a[1] + d1[1] * t];
+      if(dist(X, w.b) < Math.max(150, l1 * .6) && dist(X, n.a) < Math.max(150, l2 * .6)){ V.push(X); return; }
+      V.push(w.b, n.a); return;
+    }
+    // murs parallèles : même alignement → un seul mur ; sinon décroché → petit mur de liaison
+    const off = Math.abs((n.a[0] - w.a[0]) * d1[1] - (n.a[1] - w.a[1]) * d1[0]) / l1;
+    if(off < 15) return;
+    V.push(w.b, n.a);
+  });
+  // nettoyer : points en double et coins plats
+  let poly = V.filter((p, i) => dist(p, V[(i + 1) % V.length]) > 5);
+  for(let k = 0; k < 3; k++) poly = poly.filter((p, i) => {
+    const A = poly[(i - 1 + poly.length) % poly.length], B = poly[(i + 1) % poly.length];
+    const u = [p[0] - A[0], p[1] - A[1]], v = [B[0] - p[0], B[1] - p[1]];
+    return Math.abs(u[0] * v[1] - u[1] * v[0]) / ((Math.hypot(...u) * Math.hypot(...v)) || 1) > 0.05;
+  });
+  if(poly.length < 3) throw new Error("Contour de la pièce introuvable");
+  const chain = poly.map((p, i) => ({a:p, b:poly[(i + 1) % poly.length]}));
+  const used = {size:W.length};
+  const dir = c => Math.atan2(c.b[1] - c.a[1], c.b[0] - c.a[0]);
+  let area = 0; chain.forEach(c => area += c.a[0] * c.b[1] - c.b[0] * c.a[1]);
+  let seq = chain;
+  if(area < 0) seq = chain.slice().reverse().map(c => ({a:c.b, b:c.a}));
+  const murs = seq.map((c, i) => {
+    const nx = seq[(i + 1) % seq.length]; let tr = (dir(nx) - dir(c)) * 180 / Math.PI;
+    tr = ((tr + 540) % 360) - 180; const r = Math.round(tr / 90) * 90; if(Math.abs(tr - r) < 8) tr = r;
+    return {len:Math.round(dist(c.a, c.b)), turn:Math.round(tr)};
+  });
+  const floorY = Math.min(...W.map(w => w.yb));
+  const hauteur = Math.round(Math.max(...W.map(w => w.haut)));
+  const ouvertures = [];
+  const addOp = (list, type) => (list || []).forEach(o => {
+    const t = flat(o.transform), d = flat(o.dimensions); const p = [t[12] * 100, t[14] * 100];
+    let best = null;
+    seq.forEach((c, i) => { const L = dist(c.a, c.b) || 1, ux = (c.b[0] - c.a[0]) / L, uz = (c.b[1] - c.a[1]) / L;
+      const s = (p[0] - c.a[0]) * ux + (p[1] - c.a[1]) * uz, q = [c.a[0] + ux * s, c.a[1] + uz * s], e = dist(p, q);
+      if(s > -20 && s < L + 20 && (!best || e < best.e)) best = {i, s, e}; });
+    if(!best) return;
+    const w = Math.round(d[0] * 100), h = Math.round(d[1] * 100);
+    const pos = Math.max(0, Math.min(murs[best.i].len - w, Math.round(best.s - w / 2)));
+    const allege = Math.max(0, Math.round((t[13] - d[1] / 2) * 100 - floorY));
+    ouvertures.push({type, mur:best.i, pos, w, h, allege:type === "Porte" || type === "Passage" ? 0 : allege});
+  });
+  addOp(room.doors, "Porte"); addOp(room.windows, "Fenêtre"); addOp(room.openings, "Passage");
+  const NOMS = {storage:"rangement", refrigerator:"réfrigérateur", stove:"cuisinière", bed:"lit", sink:"évier", washerDryer:"lave-linge", toilet:"WC", bathtub:"baignoire", oven:"four", dishwasher:"lave-vaisselle", table:"table", sofa:"canapé", chair:"chaise", fireplace:"cheminée", television:"télévision", stairs:"escalier"};
+  const objets = (room.objects || []).map(o => { const k = Object.keys(o.category || {})[0] || "objet"; const d = flat(o.dimensions); return `${NOMS[k] || k} ${Math.round(d[0] * 100)}×${Math.round(d[2] * 100)}×${Math.round(d[1] * 100)} cm`; });
+  const notes = "Plan scanné au LiDAR le " + new Date().toLocaleDateString("fr-FR") + (used.size < W.length ? `. Attention : ${W.length - used.size} mur(s) non raccordé(s), à vérifier` : "") + (objets.length ? ". Meubles détectés (L×P×H) : " + objets.join(", ") : "");
+  return {mode:"murs", murs, hauteur, ouvertures, notes, L:murs[0]?.len, l:murs[1]?.len};
+}
+window.__onScan = async function(json){
+  try {
+    const room = typeof json === "string" ? JSON.parse(json) : json;
+    if(!S.project) await ensureProject();
+    // le scan brut est gardé dans le dossier : on peut refaire le plan coté à tout moment
+    const sc = {id:uid(), projectId:S.project.id, type:"scan", nom:"Scan " + new Date().toLocaleString("fr-FR", {day:"numeric", month:"short", hour:"2-digit", minute:"2-digit"}), json:typeof json === "string" ? json : JSON.stringify(json), cree:Date.now(),
+      resume:`${(room.walls || []).length} murs · ${(room.doors || []).length} porte(s) · ${(room.windows || []).length} fenêtre(s)`};
+    await DB.put("media", sc);
+    const seed = roomToPlan(room); seed.nom = "Pièce scannée " + new Date().toLocaleDateString("fr-FR"); seed.scanId = sc.id;
+    newPlan(seed); await DB.put("plans", Object.assign(S.plan, {modifie:Date.now()})); await touch(S.project);
+    toast("Scan gardé dans le dossier et plan coté créé. Vérifiez les cotes importantes au mètre.", 4500);
+  } catch(e){ console.warn(e); toast("Le scan n'a pas pu être converti en plan : " + e.message, 5000); }
+};
+async function scanToPlan(id){
+  const sc = await DB.get("media", id); if(!sc) return;
+  try {
+    const seed = roomToPlan(JSON.parse(sc.json)); seed.nom = "Pièce scannée " + fmtDate(sc.cree) + " (refait)"; seed.scanId = sc.id;
+    newPlan(seed); await DB.put("plans", Object.assign(S.plan, {modifie:Date.now()})); await touch(S.project);
+    toast("Nouveau plan coté créé à partir du scan.");
+  } catch(e){ toast("Ce scan n'a pas pu être relu."); }
+}
+window.__onScanStatus = s => { if(s === "Error") toast("Le scan a échoué. Réessayez avec plus de lumière, en bougeant lentement."); };
+
+/* ================= Écran toujours allumé ================= */
+// L'appli iPhone garde l'écran allumé elle-même ; dans un navigateur on demande un « wake lock ».
+let wakeLock = null;
+async function keepAwake(){ if(NATIVE || !("wakeLock" in navigator) || document.visibilityState !== "visible") return; try { wakeLock = await navigator.wakeLock.request("screen"); } catch(e){} }
+document.addEventListener("visibilitychange", keepAwake); addEventListener("pointerdown", () => { if(!wakeLock || wakeLock.released) keepAwake(); });
+keepAwake();
+
+/* ================= Démarrage ================= */
+renderHome();
+if("serviceWorker" in navigator) addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+</script>
+</body>
+</html>

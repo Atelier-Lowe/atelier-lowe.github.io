@@ -487,6 +487,7 @@ video.player{width:100%;border-radius:var(--r-lg);background:#000;display:block;
     <p class="small muted" style="margin:0">Vos projets restent sur ce téléphone. Exportez-les de temps en temps pour les garder en sécurité ou les passer sur l'ordinateur.</p>
     <div class="grid2"><button class="btn" id="exportAll">Exporter</button><button class="btn" id="importAll">Importer</button></div>
     <p class="small muted" id="storageInfo" style="margin:0"></p>
+    <div id="oldSite" class="stack" style="gap:6px" hidden><p class="small" style="margin:0"><b>Chantiers de l'ancienne adresse :</b> ouvrez l'ancienne version, allez dans Outils › Sauvegarde › Exporter et enregistrez le fichier. Revenez ici et touchez « Importer ».</p><a class="btn ghost small" href="https://lowe-atelier.netlify.app/" style="align-self:flex-start">Ouvrir l'ancienne version</a></div>
   </div>
 </section>
 
@@ -1872,6 +1873,7 @@ $("#exportAll").onclick = async () => {
   shareImage(blob, `sauvegarde-atelier-lowe-${new Date().toISOString().slice(0, 10)}.json`);
 };
 $("#importAll").onclick = () => $("#fBackup").click();
+if(/github\.io$/.test(location.hostname)) $("#oldSite").hidden = false;
 $("#fBackup").onchange = async e => {
   const f = e.target.files[0]; e.target.value = ""; if(!f) return;
   try {
